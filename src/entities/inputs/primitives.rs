@@ -3,12 +3,13 @@ use ::std::collections::HashMap;
 use ::serde::Deserialize;
 
 use super::array::ArrayProperty;
+use super::structure::Structure;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum PrimitiveTypes {
   Array(ArrayProperty),
-  Struct(HashMap<String, PrimitiveTypes>),
+  Struct(Structure),
   Use(String),
   Bool,
   String,
