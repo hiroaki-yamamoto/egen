@@ -1,6 +1,6 @@
 mod array;
 mod primitives;
-mod structure;
+mod root;
 
 pub use self::primitives::PrimitiveTypes;
-pub use self::structure::Structure;
+pub use self::root::Root;
