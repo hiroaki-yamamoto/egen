@@ -1,7 +1,7 @@
 use ::serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", untagged)]
 pub enum Types {
   Array,
   Bool,
@@ -16,4 +16,5 @@ pub enum Types {
   U32,
   U64,
   U128,
+  Object,
 }
