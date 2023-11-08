@@ -1,3 +1,5 @@
-mod types;
+mod array;
+mod primitives;
+mod structure;
 
-pub use types::Types;
+pub use self::primitives::PrimitiveTypes;
