@@ -19,7 +19,7 @@ mod tests {
   use super::super::interface::IDecode;
   use super::Yaml;
   use crate::fixtures::{
-    reference::reference, self_reference::self_reference,
+    complex::complex, reference::reference, self_reference::self_reference,
     simple_struct::struct_simple, struct_array::struct_array,
     struct_w_fld_attr::struct_w_fld_attr,
   };
@@ -80,6 +80,19 @@ mod tests {
   fn test_self_reference() {
     let structure = self_reference();
     let doc = include_str!("../../fixtures/self_reference.yml");
+    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    assert!(
+      doc == structure,
+      "fixture = {:?}, structure = {:?}",
+      doc,
+      structure
+    );
+  }
+
+  #[test]
+  fn test_complex_structure() {
+    let structure = complex();
+    let doc = include_str!("../../fixtures/complex.yml");
     let doc = Yaml.decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,

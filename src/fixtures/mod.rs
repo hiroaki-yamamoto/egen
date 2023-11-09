@@ -1,3 +1,4 @@
+pub mod complex;
 pub mod reference;
 pub mod self_reference;
 pub mod simple_struct;

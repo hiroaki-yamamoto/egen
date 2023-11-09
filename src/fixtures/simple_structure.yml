@@ -16,34 +16,34 @@ members:
   uint128: u128
   boolean: bool
   text: string
-  opt_float32: f32
-  opt_float64: f64
-  opt_int8: i8
-  opt_int16: i16
-  opt_int32: i32
-  opt_int64: i64
-  opt_int128: i128
-  opt_uint8: u8
-  opt_uint16: u16
-  opt_uint32: u32
-  opt_uint64: u64
-  opt_uint128: u128
-  opt_boolean: bool
-  opt_text: string
+  optFloat32: f32
+  optFloat64: f64
+  optInt8: i8
+  optInt16: i16
+  optInt32: i32
+  optInt64: i64
+  optInt128: i128
+  optUint8: u8
+  optUint16: u16
+  optUint32: u32
+  optUint64: u64
+  optUint128: u128
+  optBoolean: bool
+  optText: string
 optional:
   [
-    opt_float32,
-    opt_float64,
-    opt_int8,
-    opt_int16,
-    opt_int32,
-    opt_int64,
-    opt_int128,
-    opt_uint8,
-    opt_uint16,
-    opt_uint32,
-    opt_uint64,
-    opt_uint128,
-    opt_boolean,
-    opt_text,
+    optFloat32,
+    optFloat64,
+    optInt8,
+    optInt16,
+    optInt32,
+    optInt64,
+    optInt128,
+    optUint8,
+    optUint16,
+    optUint32,
+    optUint64,
+    optUint128,
+    optBoolean,
+    optText,
   ]

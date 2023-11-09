@@ -1,0 +1,26 @@
+rust:
+  derive: [Debug, "::serde::Serialize"]
+  attrs: ['serde(rename_all = "camelCase")']
+members:
+  code: u16
+  simpleText: string
+  detailedText:
+    type: string
+    rust:
+      attrs:
+        - 'serde(rename = "detail")'
+  simpleArray:
+    rust:
+      attrs:
+        - 'serde(rename = "lst")'
+    type:
+      array:
+        item: string
+  referenceArray:
+    array:
+      item:
+        use: SimpleStructure
+  selfReferenceArray:
+    array:
+      item:
+        use: Complex
