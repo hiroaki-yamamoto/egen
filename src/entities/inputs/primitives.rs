@@ -1,5 +1,7 @@
 use ::serde::Deserialize;
 
+use super::array::ArrayProperty;
+
 #[derive(Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub enum PrimitiveTypes {
@@ -17,4 +19,6 @@ pub enum PrimitiveTypes {
   U32,
   U64,
   U128,
+  Use(String),
+  Array(ArrayProperty),
 }

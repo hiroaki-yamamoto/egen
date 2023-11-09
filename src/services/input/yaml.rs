@@ -1,7 +1,7 @@
 use ::serde_yaml::from_reader;
 use ::std::io::Read;
 
-use crate::entities::inputs::CompositeTypes;
+use crate::entities::inputs::Structure;
 
 use super::error::Result;
 use super::interface::IDecode;
@@ -9,7 +9,7 @@ use super::interface::IDecode;
 pub struct Yaml;
 
 impl IDecode for Yaml {
-  fn decode(&self, input: impl Read) -> Result<CompositeTypes> {
+  fn decode(&self, input: impl Read) -> Result<Structure> {
     return Ok(from_reader(input)?);
   }
 }
@@ -18,8 +18,10 @@ impl IDecode for Yaml {
 mod tests {
   use super::super::interface::IDecode;
   use super::Yaml;
-  use crate::fixtures::simple_struct::struct_simple;
-  use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
+  use crate::fixtures::{
+    simple_struct::struct_simple, struct_array::struct_array,
+    struct_w_fld_attr::struct_w_fld_attr,
+  };
 
   #[test]
   fn test_simple() {
@@ -43,6 +45,19 @@ mod tests {
       from_doc == structure,
       "fixture = {:?}, structure = {:?}",
       from_doc,
+      structure
+    );
+  }
+
+  #[test]
+  fn test_struct_array() {
+    let structure = struct_array();
+    let doc = include_str!("../../fixtures/struct_array.yml");
+    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    assert!(
+      doc == structure,
+      "fixture = {:?}, structure = {:?}",
+      doc,
       structure
     );
   }

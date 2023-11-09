@@ -1,7 +1,7 @@
 use ::serde::Deserialize;
 
+use super::primitives::PrimitiveTypes;
 use super::rs::Rust;
-use super::PrimitiveTypes;
 
 #[derive(Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
