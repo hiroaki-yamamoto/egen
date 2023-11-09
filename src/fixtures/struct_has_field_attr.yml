@@ -1,0 +1,7 @@
+type: struct
+members:
+  test:
+    type: string
+    rust:
+      derive: ["Debug"] # Note that this should be ignored
+      attrs: ['serde(rename = "test2")']

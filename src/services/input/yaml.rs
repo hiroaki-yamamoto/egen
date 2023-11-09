@@ -17,19 +17,32 @@ impl IDecode for Yaml {
 #[cfg(test)]
 mod tests {
   use super::super::interface::IDecode;
+  use super::Yaml;
   use crate::fixtures::simple_struct::struct_simple;
-  const SIMPLE_STRUCTURE_DOC: &'static str =
-    include_str!("../../fixtures/simple_structure.yml");
+  use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
 
   #[test]
   fn test_simple() {
     let structure = struct_simple();
-    let struct_from_fixture =
-      super::Yaml.decode(SIMPLE_STRUCTURE_DOC.as_bytes()).unwrap();
+    let doc = include_str!("../../fixtures/simple_structure.yml");
+    let struct_from_fixture = Yaml.decode(doc.as_bytes()).unwrap();
     assert!(
       struct_from_fixture == structure,
       "fixture = {:?}, structure = {:?}",
       struct_from_fixture,
+      structure
+    );
+  }
+
+  #[test]
+  fn test_field_has_attr() {
+    let structure = struct_w_fld_attr();
+    let doc = include_str!("../../fixtures/struct_has_field_attr.yml");
+    let from_doc = Yaml.decode(doc.as_bytes()).unwrap();
+    assert!(
+      from_doc == structure,
+      "fixture = {:?}, structure = {:?}",
+      from_doc,
       structure
     );
   }

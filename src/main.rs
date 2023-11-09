@@ -1,4 +1,5 @@
 mod entities;
+mod macros;
 mod services;
 
 #[cfg(test)]
