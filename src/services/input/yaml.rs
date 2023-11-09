@@ -19,9 +19,9 @@ mod tests {
   use super::super::interface::IDecode;
   use super::Yaml;
   use crate::fixtures::{
-    complex::complex, reference::reference, self_reference::self_reference,
-    simple_struct::struct_simple, struct_array::struct_array,
-    struct_w_fld_attr::struct_w_fld_attr,
+    complex::complex, enumeration::enumeration, reference::reference,
+    self_reference::self_reference, simple_struct::struct_simple,
+    struct_array::struct_array, struct_w_fld_attr::struct_w_fld_attr,
   };
 
   #[test]
@@ -93,6 +93,19 @@ mod tests {
   fn test_complex_structure() {
     let structure = complex();
     let doc = include_str!("../../fixtures/complex.yml");
+    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    assert!(
+      doc == structure,
+      "fixture = {:?}, structure = {:?}",
+      doc,
+      structure
+    );
+  }
+
+  #[test]
+  fn test_enumeration() {
+    let structure = enumeration();
+    let doc = include_str!("../../fixtures/enumeration.yml");
     let doc = Yaml.decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,

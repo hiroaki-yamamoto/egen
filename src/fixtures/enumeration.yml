@@ -1,6 +1,6 @@
 type: enum
 rust:
-  derive: ["::serde::Serialize"]
+  derive: [Debug, "::serde::Serialize"]
   attrs: ['serde(rename_all = "camelCase")']
 members:
   - this
