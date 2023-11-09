@@ -10,7 +10,7 @@ type:
         item: string
       arr2:
         rust:
-          attrs: [serde(rename = "test_array2")]
+          attrs: [serde(rename = "test_array2"), test_attr]
         item: bool
       test_array3:
         item: i32
@@ -30,12 +30,12 @@ type:
       text: string
       opt_arr1:
         rust:
-          attrs: [serde(rename = "test_array1")]
+          attrs: [serde(rename = "opt_test_array1", test_attr)]
           derive: [Debug, Clone]
         item: string
       opt_arr2:
         rust:
-          attrs: [serde(rename = "test_array2")]
+          attrs: [serde(rename = "opt_test_array2")]
         item: bool
       opt_test_array3:
         item: i32
