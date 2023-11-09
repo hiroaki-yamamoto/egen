@@ -19,8 +19,8 @@ mod tests {
   use super::super::interface::IDecode;
   use super::Yaml;
   use crate::fixtures::{
-    simple_struct::struct_simple, struct_array::struct_array,
-    struct_w_fld_attr::struct_w_fld_attr,
+    reference::reference, simple_struct::struct_simple,
+    struct_array::struct_array, struct_w_fld_attr::struct_w_fld_attr,
   };
 
   #[test]
@@ -53,6 +53,19 @@ mod tests {
   fn test_struct_array() {
     let structure = struct_array();
     let doc = include_str!("../../fixtures/struct_array.yml");
+    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    assert!(
+      doc == structure,
+      "fixture = {:?}, structure = {:?}",
+      doc,
+      structure
+    );
+  }
+
+  #[test]
+  fn test_reference() {
+    let structure = reference();
+    let doc = include_str!("../../fixtures/reference.yml");
     let doc = Yaml.decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,
