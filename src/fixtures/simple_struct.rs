@@ -1,7 +1,7 @@
-use crate::entities::inputs::{Field, PrimitiveTypes, Rust, Structure};
+use crate::entities::inputs::{Field, PrimitiveTypes, Root, Rust, Structure};
 use ::map_macro::hash_map_e;
 
-pub fn struct_simple() -> Structure {
+pub fn struct_simple() -> Root {
   return Structure::new()
     .rust(Some(Rust {
       derive: Some(vec![
@@ -56,5 +56,6 @@ pub fn struct_simple() -> Structure {
       "optUint128".to_string(),
       "optBoolean".to_string(),
       "optText".to_string(),
-    ]));
+    ]))
+    .into();
 }

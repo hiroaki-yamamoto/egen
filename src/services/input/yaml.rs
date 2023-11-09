@@ -1,7 +1,7 @@
 use ::serde_yaml::from_reader;
 use ::std::io::Read;
 
-use crate::entities::inputs::Structure;
+use crate::entities::inputs::Root;
 
 use super::error::Result;
 use super::interface::IDecode;
@@ -9,7 +9,7 @@ use super::interface::IDecode;
 pub struct Yaml;
 
 impl IDecode for Yaml {
-  fn decode(&self, input: impl Read) -> Result<Structure> {
+  fn decode(&self, input: impl Read) -> Result<Root> {
     return Ok(from_reader(input)?);
   }
 }

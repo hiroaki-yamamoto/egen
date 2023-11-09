@@ -1,10 +1,10 @@
 use ::map_macro::hash_map_e;
 
 use crate::entities::inputs::{
-  ArrayProperty, Field, FieldInner, PrimitiveTypes, Rust, Structure,
+  ArrayProperty, Field, FieldInner, PrimitiveTypes, Root, Rust, Structure,
 };
 
-pub fn complex() -> Structure {
+pub fn complex() -> Root {
   return Structure::new()
     .rust(Some(
       Rust::new()
@@ -31,5 +31,5 @@ pub fn complex() -> Structure {
       "selfReferenceArray".to_string() => Field::Primitive(PrimitiveTypes::Array(
         ArrayProperty::new(PrimitiveTypes::Use("Complex".to_string()))
       )),
-    });
+    }).into();
 }

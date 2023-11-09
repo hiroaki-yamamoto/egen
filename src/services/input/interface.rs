@@ -1,8 +1,8 @@
 use ::std::io::Read;
 
 use super::error::Result;
-use crate::entities::inputs::Structure;
+use crate::entities::inputs::Root;
 
 pub trait IDecode {
-  fn decode(&self, input: impl Read) -> Result<Structure>;
+  fn decode(&self, input: impl Read) -> Result<Root>;
 }
