@@ -1,3 +1,4 @@
+type: struct
 members:
   reference:
     use: "SelReference"

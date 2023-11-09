@@ -1,3 +1,4 @@
+type: struct
 rust:
   derive: [Debug, "::serde::Serialize"]
   attrs: ['serde(rename_all = "camelCase")']

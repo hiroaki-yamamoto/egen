@@ -1,0 +1,9 @@
+type: enum
+rust:
+  derive: ["::serde::Serialize"]
+  attrs: ['serde(rename_all = "camelCase")']
+members:
+  - this
+  - is
+  - a
+  - test
