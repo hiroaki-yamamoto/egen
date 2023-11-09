@@ -1,8 +1,11 @@
-use super::primitives::PrimitiveTypes;
 use ::serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+use super::primitives::PrimitiveTypes;
+use super::rs::Rust;
+
+#[derive(Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ArrayProperty {
+  pub rust: Option<Rust>,
   pub item: Box<PrimitiveTypes>,
 }

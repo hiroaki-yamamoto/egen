@@ -1,6 +1,6 @@
 use ::serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Rust {
   pub derive: Option<Vec<String>>,

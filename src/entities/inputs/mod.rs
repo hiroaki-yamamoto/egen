@@ -5,7 +5,7 @@ mod root;
 mod rs;
 mod structure;
 
-pub use self::field::Field;
+pub use self::field::{Field, FieldInner};
 pub use self::primitives::PrimitiveTypes;
 pub use self::root::Root;
 pub use self::rs::Rust;
