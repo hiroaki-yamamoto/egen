@@ -1,0 +1,50 @@
+type: struct
+rust:
+  derive: [Debug, Clone, "::serde:Serialize"]
+  attrs: ['serde(rename_all = "camelCase")']
+members:
+  float32: f32
+  float64: f64
+  int8: i8
+  int16: i16
+  int32: i32
+  int64: i64
+  int128: i128
+  uint8: u8
+  uint16: u16
+  uint32: u32
+  uint64: u64
+  uint128: u128
+  boolean: bool
+  text: string
+  opt_float32: f32
+  opt_float64: f64
+  opt_int8: i8
+  opt_int16: i16
+  opt_int32: i32
+  opt_int64: i64
+  opt_int128: i128
+  opt_uint8: u8
+  opt_uint16: u16
+  opt_uint32: u32
+  opt_uint64: u64
+  opt_uint128: u128
+  opt_boolean: bool
+  opt_text: string
+optional:
+  [
+    opt_float32,
+    opt_float64,
+    opt_int8,
+    opt_int16,
+    opt_int32,
+    opt_int64,
+    opt_int128,
+    opt_uint8,
+    opt_uint16,
+    opt_uint32,
+    opt_uint64,
+    opt_uint128,
+    opt_boolean,
+    opt_text,
+  ]

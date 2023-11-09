@@ -1,6 +1,8 @@
+use ::std::io::Read;
+
 use super::error::Result;
-use crate::entities::inputs::Root;
+use crate::entities::inputs::CompositeTypes;
 
 pub trait IDecode {
-  fn decode(&self, input: &str) -> Result<Root>;
+  fn decode(&self, input: impl Read) -> Result<CompositeTypes>;
 }
