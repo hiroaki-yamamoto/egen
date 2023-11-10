@@ -28,7 +28,7 @@ impl ITag for Tag {
     let mut name = self.raw_name.to_string().replace("-", "_");
     let split_capitalized_names = name.split("_").map(|name| {
       let mut name = self.re.replace_all(name, "").to_string();
-      name = name.remove(0).to_uppercase().to_string() + &name;
+      name = name.remove(0).to_uppercase().to_string() + &name.to_lowercase();
       return name;
     });
     name = split_capitalized_names.collect::<Vec<String>>().join("");
@@ -44,6 +44,11 @@ impl ITag for Tag {
     name = split_capitalized_names.collect::<Vec<String>>().join("_");
     return Arc::new(name);
   }
+
+  fn ts_module_name(&self) -> Arc<String> {
+    let name = self.rs_module_name().replace("_", "-");
+    return Arc::new(name);
+  }
 }
 
 #[cfg(test)]
@@ -56,7 +61,7 @@ mod test {
   #[test]
   fn test_class_name() {
     let tag = Tag::new(
-      "@ cla\tss_na||☺me-te\nst|\\]';".to_string(),
+      "@ cla\tss_na||☺Me-te\nst|\\]';".to_string(),
       Root::Struct(Structure::new()),
     )
     .unwrap();
@@ -67,11 +72,22 @@ mod test {
   #[test]
   fn test_rs_module_name() {
     let tag = Tag::new(
-      "@ cla\tss_na||☺me-te\nst|\\]';".to_string(),
+      "@ cla\tss_na||☺Me-te\nst|\\]';".to_string(),
       Root::Struct(Structure::new()),
     )
     .unwrap();
     let name = tag.rs_module_name();
     assert!(name.as_ref() == "class_name_test", "name: {:?}", name);
+  }
+
+  #[test]
+  fn test_ts_module_name() {
+    let tag = Tag::new(
+      "@ cla\tss_na||☺Me-te\nst|\\]';".to_string(),
+      Root::Struct(Structure::new()),
+    )
+    .unwrap();
+    let name = tag.ts_module_name();
+    assert!(name.as_ref() == "class-name-test", "name: {:?}", name);
   }
 }

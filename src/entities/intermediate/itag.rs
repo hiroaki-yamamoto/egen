@@ -5,5 +5,6 @@ pub trait ITag {
   fn class_name(&self) -> Arc<String>;
   /// Return the hint of module name in Rust.
   fn rs_module_name(&self) -> Arc<String>;
-  // fn ts_module_name(&self) -> &str;
+  /// Return the hint of module name in TypeScript.
+  fn ts_module_name(&self) -> Arc<String>;
 }
