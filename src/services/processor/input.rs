@@ -2,6 +2,7 @@ use ::std::fs::File;
 use ::std::path::Path;
 use ::std::sync::Arc;
 
+use crate::entities::inputs::Root;
 use crate::entities::intermediate::Tag;
 
 use super::super::input::IDecode;
@@ -39,11 +40,11 @@ impl Processor {
 }
 
 impl IInputProcessor for Processor {
-  fn process(&self, path: impl AsRef<Path>) -> Result<Tag> {
+  fn process(&self, path: impl AsRef<Path>) -> Result<(Tag, Root)> {
     let name = self.name(&path)?;
     let reader = File::open(path)?;
     let root = self.decoder.decode(reader)?;
-    return Ok(Tag::new(name, root)?);
+    return Ok((Tag::new(name)?, root));
   }
 }
 
