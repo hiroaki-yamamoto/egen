@@ -1,15 +1,37 @@
-use ::serde_yaml::from_reader;
 use ::std::io::Read;
+use ::std::marker::PhantomData;
+
+use ::serde_yaml::from_reader;
 
 use crate::entities::inputs::Root;
 
 use super::error::Result;
 use super::interface::IDecode;
 
-pub struct Yaml;
+pub struct Yaml<Reader>
+where
+  Reader: Read,
+{
+  _reader: PhantomData<Reader>,
+}
 
-impl IDecode for Yaml {
-  fn decode(&self, input: impl Read) -> Result<Root> {
+impl<Reader> Yaml<Reader>
+where
+  Reader: Read,
+{
+  pub fn new() -> Self {
+    Self {
+      _reader: PhantomData,
+    }
+  }
+}
+
+impl<Reader> IDecode for Yaml<Reader>
+where
+  Reader: Read,
+{
+  type Reader = Reader;
+  fn decode(&self, input: Reader) -> Result<Root> {
     return Ok(from_reader(input)?);
   }
 }
@@ -28,7 +50,7 @@ mod tests {
   fn test_simple() {
     let structure = struct_simple();
     let doc = include_str!("../../fixtures/simple_structure.yml");
-    let struct_from_fixture = Yaml.decode(doc.as_bytes()).unwrap();
+    let struct_from_fixture = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       struct_from_fixture == structure,
       "fixture = {:?}, structure = {:?}",
@@ -41,7 +63,7 @@ mod tests {
   fn test_field_has_attr() {
     let structure = struct_w_fld_attr();
     let doc = include_str!("../../fixtures/struct_has_field_attr.yml");
-    let from_doc = Yaml.decode(doc.as_bytes()).unwrap();
+    let from_doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       from_doc == structure,
       "fixture = {:?}, structure = {:?}",
@@ -54,7 +76,7 @@ mod tests {
   fn test_struct_array() {
     let structure = struct_array();
     let doc = include_str!("../../fixtures/struct_array.yml");
-    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,
       "fixture = {:?}, structure = {:?}",
@@ -67,7 +89,7 @@ mod tests {
   fn test_reference() {
     let structure = reference();
     let doc = include_str!("../../fixtures/reference.yml");
-    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,
       "fixture = {:?}, structure = {:?}",
@@ -80,7 +102,7 @@ mod tests {
   fn test_self_reference() {
     let structure = self_reference();
     let doc = include_str!("../../fixtures/self_reference.yml");
-    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,
       "fixture = {:?}, structure = {:?}",
@@ -93,7 +115,7 @@ mod tests {
   fn test_complex_structure() {
     let structure = complex();
     let doc = include_str!("../../fixtures/complex.yml");
-    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,
       "fixture = {:?}, structure = {:?}",
@@ -106,7 +128,7 @@ mod tests {
   fn test_enumeration() {
     let structure = enumeration();
     let doc = include_str!("../../fixtures/enumeration.yml");
-    let doc = Yaml.decode(doc.as_bytes()).unwrap();
+    let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,
       "fixture = {:?}, structure = {:?}",

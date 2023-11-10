@@ -1,9 +1,10 @@
 use ::std::sync::Arc;
 
-use ::regex::{Error as RegexError, Regex};
+use ::regex::Regex;
 
 use crate::entities::inputs::Root;
 
+use super::error::Result as IntermediateResult;
 use super::itag::ITag;
 
 #[derive(Debug)]
@@ -14,7 +15,7 @@ pub struct Tag {
 }
 
 impl Tag {
-  pub fn new(name: String, root: Root) -> Result<Self, RegexError> {
+  pub fn new(name: String, root: Root) -> IntermediateResult<Self> {
     return Ok(Self {
       raw_name: name,
       root,
