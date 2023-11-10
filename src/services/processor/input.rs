@@ -2,10 +2,11 @@ use ::std::fs::File;
 use ::std::path::Path;
 use ::std::sync::Arc;
 
-use crate::entities::intermediate::{ITag, Tag};
+use crate::entities::intermediate::Tag;
 
 use super::super::input::IDecode;
 use super::error::{InputProcessError, InputProcessResult as Result};
+use super::interface::IInputProcessor;
 
 pub struct Processor {
   decoder: Arc<dyn IDecode<Reader = File> + Send + Sync>,
@@ -35,9 +36,10 @@ impl Processor {
   pub fn __name__(&self, path: impl AsRef<Path>) -> Result<String> {
     return self.name(path);
   }
+}
 
-  /// Process a file into a tag.
-  pub fn process(&self, path: impl AsRef<Path>) -> Result<Tag> {
+impl IInputProcessor for Processor {
+  fn process(&self, path: impl AsRef<Path>) -> Result<Tag> {
     let name = self.name(&path)?;
     let reader = File::open(path)?;
     let root = self.decoder.decode(reader)?;
