@@ -8,5 +8,6 @@ edition = "2021"
 [dependencies]
 err-derive = "0.3.1"
 map-macro = "0.2.6"
+regex = "1.10.2"
 serde = { version = "1.0.192", features = ["derive"] }
 serde_yaml = "0.9.27"
