@@ -14,7 +14,7 @@ impl ImportExtractor {
 }
 
 impl IImportExtractor for ImportExtractor {
-  fn extract(&self, self_tag: &Tag, root: &Root) -> Vec<Tag> {
+  fn extract(&self, tag_root: &Tag, root: &Root) -> Vec<Tag> {
     let mut result = Vec::new();
     match root {
       Root::Struct(root) => {
@@ -26,7 +26,7 @@ impl IImportExtractor for ImportExtractor {
           match fld_type {
             PrimitiveTypes::Use(name) => {
               let matched = self.tags.iter().find(|&tag| {
-                tag.class_name().as_ref() == name && tag != self_tag
+                tag.class_name().as_ref() == name && tag != tag_root
               });
               if let Some(matched) = matched {
                 result.push(matched.clone());
