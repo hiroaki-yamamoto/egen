@@ -1,4 +1,5 @@
-use crate::entities::intermediate::Tag;
+use crate::entities::inputs::{Field, PrimitiveTypes, Root};
+use crate::entities::intermediate::{ITag, Tag};
 
 use super::interface::IImportExtractor;
 
@@ -13,22 +14,45 @@ impl ImportExtractor {
 }
 
 impl IImportExtractor for ImportExtractor {
-  fn extract(&self, root: &crate::entities::inputs::Root) -> Vec<Tag> {
+  fn extract(&self, root: &Root) -> Vec<Tag> {
     let mut result = Vec::new();
-
+    match root {
+      Root::Struct(root) => {
+        for (_, field) in root.members.iter() {
+          let fld_type = match field {
+            Field::Inner(inner) => &inner.f_type,
+            Field::Primitive(primitive) => primitive,
+          };
+          match fld_type {
+            PrimitiveTypes::Use(name) => {
+              let matched = self
+                .tags
+                .iter()
+                .find(|tag| tag.class_name().as_ref() == name);
+              if let Some(matched) = matched {
+                result.push(matched.clone());
+              }
+            }
+            _ => {}
+          }
+        }
+      }
+      Root::Enum(_) => {}
+    }
     return result;
   }
 }
 
 #[cfg(test)]
 mod test {
+  use super::IImportExtractor;
   use super::ImportExtractor;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::reference::reference;
 
   #[test]
   fn test_simple_extraction() {
-    let correct = vec![Tag::new("simple_structure".to_string())];
+    let correct = vec![Tag::new("simple_structure".to_string()).unwrap()];
     let doc = reference();
 
     let extractor = ImportExtractor::new(vec![
