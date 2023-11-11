@@ -5,7 +5,7 @@ pub fn self_reference() -> Root {
   return Structure::new()
     .members(hash_map_e! {
       "reference".to_string() => Field::Primitive(PrimitiveTypes::Use(
-        "SelReference".to_string()
+        "SelfReference".to_string()
       ))
     })
     .into();

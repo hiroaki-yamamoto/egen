@@ -14,7 +14,7 @@ impl ImportExtractor {
 }
 
 impl IImportExtractor for ImportExtractor {
-  fn extract(&self, root: &Root) -> Vec<Tag> {
+  fn extract(&self, self_tag: &Tag, root: &Root) -> Vec<Tag> {
     let mut result = Vec::new();
     match root {
       Root::Struct(root) => {
@@ -25,10 +25,9 @@ impl IImportExtractor for ImportExtractor {
           };
           match fld_type {
             PrimitiveTypes::Use(name) => {
-              let matched = self
-                .tags
-                .iter()
-                .find(|tag| tag.class_name().as_ref() == name);
+              let matched = self.tags.iter().find(|&tag| {
+                tag.class_name().as_ref() == name && tag != self_tag
+              });
               if let Some(matched) = matched {
                 result.push(matched.clone());
               }
@@ -50,6 +49,7 @@ mod test {
   use super::ImportExtractor;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::reference::reference;
+  use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::two_references::two_references;
 
   #[test]
@@ -57,12 +57,13 @@ mod test {
     let correct = vec![Tag::new("simple_structure".to_string()).unwrap()];
     let doc = reference();
 
+    let me = Tag::new("reference".to_string()).unwrap();
     let extractor = ImportExtractor::new(vec![
       Tag::new("simple_structure".to_string()).unwrap(),
       Tag::new("complex_structure".to_string()).unwrap(),
-      Tag::new("reference".to_string()).unwrap(),
+      me.clone(),
     ]);
-    let result = extractor.extract(&doc);
+    let result = extractor.extract(&me, &doc);
     assert!(result == correct, "result: {:?}", result);
   }
 
@@ -71,14 +72,33 @@ mod test {
     let correct = vec![Tag::new("simple_structure".to_string()).unwrap()];
     let doc = two_references();
 
+    let me = Tag::new("two_reference".to_string()).unwrap();
+    let extractor = ImportExtractor::new(vec![
+      Tag::new("simple_structure".to_string()).unwrap(),
+      Tag::new("complex_structure".to_string()).unwrap(),
+      Tag::new("reference".to_string()).unwrap(),
+      me.clone(),
+    ]);
+
+    let result = extractor.extract(&me, &doc);
+    assert!(result == correct, "result: {:?}", result);
+  }
+
+  #[test]
+  fn test_self_reference_extraction() {
+    let correct: Vec<Tag> = vec![];
+    let doc = self_reference();
+
+    let me = Tag::new("self_reference".to_string()).unwrap();
     let extractor = ImportExtractor::new(vec![
       Tag::new("simple_structure".to_string()).unwrap(),
       Tag::new("complex_structure".to_string()).unwrap(),
       Tag::new("reference".to_string()).unwrap(),
       Tag::new("two_reference".to_string()).unwrap(),
+      me.clone(),
     ]);
 
-    let result = extractor.extract(&doc);
-    assert!(result == correct, "result: {:?}", result);
+    let result = extractor.extract(&me, &doc);
+    assert!(result == correct, "result: {:?}", result)
   }
 }

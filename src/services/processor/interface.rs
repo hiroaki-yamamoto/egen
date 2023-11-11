@@ -11,5 +11,5 @@ pub trait IInputProcessor {
 }
 
 pub trait IImportExtractor {
-  fn extract(&self, root: &Root) -> Vec<Tag>;
+  fn extract(&self, self_tag: &Tag, root: &Root) -> Vec<Tag>;
 }
