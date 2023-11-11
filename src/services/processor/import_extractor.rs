@@ -48,6 +48,7 @@ mod test {
   use super::IImportExtractor;
   use super::ImportExtractor;
   use crate::entities::intermediate::Tag;
+  use crate::fixtures::complex::complex;
   use crate::fixtures::reference::reference;
   use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::two_references::two_references;
@@ -95,6 +96,26 @@ mod test {
       Tag::new("complex_structure".to_string()).unwrap(),
       Tag::new("reference".to_string()).unwrap(),
       Tag::new("two_reference".to_string()).unwrap(),
+      me.clone(),
+    ]);
+
+    let result = extractor.extract(&me, &doc);
+    assert!(result == correct, "result: {:?}", result)
+  }
+
+  #[test]
+  fn test_array_with_reference() {
+    let correct: Vec<Tag> =
+      vec![Tag::new("simple_structure".to_string()).unwrap()];
+    let doc = complex();
+
+    let me = Tag::new("complex".to_string()).unwrap();
+    let extractor = ImportExtractor::new(vec![
+      Tag::new("simple_structure".to_string()).unwrap(),
+      Tag::new("complex_structure".to_string()).unwrap(),
+      Tag::new("reference".to_string()).unwrap(),
+      Tag::new("two_reference".to_string()).unwrap(),
+      Tag::new("self_reference".to_string()).unwrap(),
       me.clone(),
     ]);
 
