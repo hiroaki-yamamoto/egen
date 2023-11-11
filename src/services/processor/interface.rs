@@ -9,3 +9,7 @@ pub trait IInputProcessor {
   /// Process a file into a tag.
   fn process(&self, path: impl AsRef<Path>) -> Result<(Tag, Root)>;
 }
+
+pub trait IImportExtractor {
+  fn extract(&self, root: &Root) -> Vec<Tag>;
+}
