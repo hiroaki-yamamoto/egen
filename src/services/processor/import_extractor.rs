@@ -39,6 +39,7 @@ impl IImportExtractor for ImportExtractor {
       }
       Root::Enum(_) => {}
     }
+    result.dedup();
     return result;
   }
 }
@@ -49,6 +50,7 @@ mod test {
   use super::ImportExtractor;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::reference::reference;
+  use crate::fixtures::two_references::two_references;
 
   #[test]
   fn test_simple_extraction() {
@@ -60,6 +62,22 @@ mod test {
       Tag::new("complex_structure".to_string()).unwrap(),
       Tag::new("reference".to_string()).unwrap(),
     ]);
+    let result = extractor.extract(&doc);
+    assert!(result == correct, "result: {:?}", result);
+  }
+
+  #[test]
+  fn test_2reference_extraction() {
+    let correct = vec![Tag::new("simple_structure".to_string()).unwrap()];
+    let doc = two_references();
+
+    let extractor = ImportExtractor::new(vec![
+      Tag::new("simple_structure".to_string()).unwrap(),
+      Tag::new("complex_structure".to_string()).unwrap(),
+      Tag::new("reference".to_string()).unwrap(),
+      Tag::new("two_reference".to_string()).unwrap(),
+    ]);
+
     let result = extractor.extract(&doc);
     assert!(result == correct, "result: {:?}", result);
   }
