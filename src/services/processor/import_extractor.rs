@@ -1,6 +1,7 @@
 use crate::entities::inputs::{Field, PrimitiveTypes, Root};
 use crate::entities::intermediate::{ITag, Tag};
 
+use super::error::{ImportExtractorError, ImportExtractorResult};
 use super::interface::IImportExtractor;
 
 pub struct ImportExtractor {
@@ -11,11 +12,40 @@ impl ImportExtractor {
   pub fn new(tags: Vec<Tag>) -> Self {
     Self { tags }
   }
+
+  fn extract_by_type(
+    &self,
+    tag_root: &Tag,
+    field_type: &PrimitiveTypes,
+  ) -> ImportExtractorResult<Vec<Tag>> {
+    let mut result: Vec<Tag> = Vec::new();
+    match field_type {
+      PrimitiveTypes::Use(name) => {
+        let matched = self
+          .tags
+          .iter()
+          .find(|&tag| tag.class_name().as_ref() == name && tag != tag_root);
+        if let Some(matched) = matched {
+          result.push(matched.clone());
+        }
+      }
+      PrimitiveTypes::Array(arr) => {
+        let mut arr_result = self.extract_by_type(tag_root, &arr.item)?;
+        result.append(&mut arr_result);
+      }
+      _ => {}
+    };
+    return Ok(result);
+  }
 }
 
 impl IImportExtractor for ImportExtractor {
-  fn extract(&self, tag_root: &Tag, root: &Root) -> Vec<Tag> {
-    let mut result = Vec::new();
+  fn extract(
+    &self,
+    tag_root: &Tag,
+    root: &Root,
+  ) -> ImportExtractorResult<Vec<Tag>> {
+    let mut result: Vec<Tag> = Vec::new();
     match root {
       Root::Struct(root) => {
         for (_, field) in root.members.iter() {
@@ -23,23 +53,13 @@ impl IImportExtractor for ImportExtractor {
             Field::Inner(inner) => &inner.f_type,
             Field::Primitive(primitive) => primitive,
           };
-          match fld_type {
-            PrimitiveTypes::Use(name) => {
-              let matched = self.tags.iter().find(|&tag| {
-                tag.class_name().as_ref() == name && tag != tag_root
-              });
-              if let Some(matched) = matched {
-                result.push(matched.clone());
-              }
-            }
-            _ => {}
-          }
+          result.append(&mut self.extract_by_type(tag_root, fld_type)?);
         }
       }
       Root::Enum(_) => {}
     }
     result.dedup();
-    return result;
+    return Ok(result);
   }
 }
 
@@ -64,7 +84,7 @@ mod test {
       Tag::new("complex_structure".to_string()).unwrap(),
       me.clone(),
     ]);
-    let result = extractor.extract(&me, &doc);
+    let result = extractor.extract(&me, &doc).unwrap();
     assert!(result == correct, "result: {:?}", result);
   }
 
@@ -81,7 +101,7 @@ mod test {
       me.clone(),
     ]);
 
-    let result = extractor.extract(&me, &doc);
+    let result = extractor.extract(&me, &doc).unwrap();
     assert!(result == correct, "result: {:?}", result);
   }
 
@@ -99,7 +119,7 @@ mod test {
       me.clone(),
     ]);
 
-    let result = extractor.extract(&me, &doc);
+    let result = extractor.extract(&me, &doc).unwrap();
     assert!(result == correct, "result: {:?}", result)
   }
 
@@ -119,7 +139,7 @@ mod test {
       me.clone(),
     ]);
 
-    let result = extractor.extract(&me, &doc);
+    let result = extractor.extract(&me, &doc).unwrap();
     assert!(result == correct, "result: {:?}", result)
   }
 }

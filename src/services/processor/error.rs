@@ -18,4 +18,11 @@ pub enum InputProcessError {
   IntermediateError(#[source] IntermediateError),
 }
 
+#[derive(Debug, Error)]
+pub enum ImportExtractorError {
+  #[error(display = "Class Not Found: {}", _0)]
+  ModuleNotFound(String),
+}
+
 pub type InputProcessResult<T> = Result<T, InputProcessError>;
+pub type ImportExtractorResult<T> = Result<T, ImportExtractorError>;
