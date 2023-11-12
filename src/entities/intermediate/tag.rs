@@ -7,7 +7,7 @@ use ::regex::Regex;
 use super::error::Result as IntermediateResult;
 use super::itag::ITag;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Tag {
   raw_name: String,
   re: Regex,
