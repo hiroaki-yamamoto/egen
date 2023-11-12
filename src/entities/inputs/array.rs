@@ -3,6 +3,7 @@ use ::serde::Deserialize;
 use super::primitives::PrimitiveTypes;
 
 #[derive(Debug, Deserialize, PartialEq, Eq)]
+#[cfg_attr(test, derive(Clone))]
 #[serde(rename_all = "camelCase")]
 pub struct ArrayProperty {
   pub item: Box<PrimitiveTypes>,

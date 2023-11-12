@@ -4,6 +4,7 @@ use ::serde::Deserialize;
 use crate::setter;
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[cfg_attr(test, derive(Clone))]
 #[serde(rename_all = "camelCase")]
 pub struct Rust {
   pub derive: Option<Vec<String>>,
