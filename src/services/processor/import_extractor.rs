@@ -24,9 +24,13 @@ impl ImportExtractor {
         let matched = self
           .tags
           .iter()
-          .find(|&tag| tag.class_name().as_ref() == name && tag != tag_root);
+          .find(|&tag| tag.class_name().as_ref() == name);
         if let Some(matched) = matched {
-          result.push(matched.clone());
+          if matched != tag_root {
+            result.push(matched.clone());
+          }
+        } else {
+          return Err(ImportExtractorError::ModuleNotFound(name.clone()));
         }
       }
       PrimitiveTypes::Array(arr) => {
@@ -67,8 +71,10 @@ impl IImportExtractor for ImportExtractor {
 mod test {
   use super::IImportExtractor;
   use super::ImportExtractor;
+  use super::ImportExtractorError;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::complex::complex;
+  use crate::fixtures::not_found::not_found;
   use crate::fixtures::reference::reference;
   use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::two_references::two_references;
@@ -141,5 +147,27 @@ mod test {
 
     let result = extractor.extract(&me, &doc).unwrap();
     assert!(result == correct, "result: {:?}", result)
+  }
+
+  #[test]
+  fn test_not_found() {
+    let doc = not_found();
+    let me = Tag::new("not_found".to_string()).unwrap();
+    let extractor = ImportExtractor::new(vec![
+      Tag::new("simple_structure".to_string()).unwrap(),
+      Tag::new("complex_structure".to_string()).unwrap(),
+      Tag::new("reference".to_string()).unwrap(),
+      Tag::new("two_reference".to_string()).unwrap(),
+      Tag::new("self_reference".to_string()).unwrap(),
+      me.clone(),
+    ]);
+
+    let result = extractor.extract(&me, &doc).unwrap_err();
+    assert!(
+      result
+        == ImportExtractorError::ModuleNotFound(
+          "__NotFoundStructure__".to_string(),
+        ),
+    )
   }
 }
