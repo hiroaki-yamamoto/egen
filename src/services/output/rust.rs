@@ -2,7 +2,7 @@ use ::std::io::Write;
 use ::std::marker::PhantomData;
 use ::std::sync::Arc;
 
-use ::minijinja::{Environment, Template};
+use ::minijinja::{context, Environment, Template};
 
 use crate::entities::inputs::Root;
 use crate::entities::intermediate::ITag;
@@ -28,9 +28,9 @@ where
   /// * `modules` - The list of modules to be imported. Note that this should be
   ///  the list of modules that is proceeded by ImportExtractor.
   pub fn new(modules: Vec<Arc<dyn ITag>>) -> OutputResult<Self> {
-    let modules: Vec<&str> = modules
+    let modules: Vec<String> = modules
       .iter()
-      .map(|tag| tag.rs_module_name().as_str())
+      .map(|tag| tag.rs_module_name().to_string())
       .collect();
     let mut env: Environment<'env> = Environment::new();
     env.add_global("tags", modules);
@@ -64,7 +64,20 @@ where
     &self,
     writer: &mut Self::Writer,
     root: &Root,
+    root_tag: Arc<dyn ITag>,
   ) -> OutputResult<()> {
+    let template = match root {
+      Root::Struct(s) => self.struct_template()?,
+      Root::Enum(e) => self.enum_template()?,
+    };
+    template.render_to_write(
+      context! {
+        class_name => root_tag.class_name().to_string(),
+        rust => root.rust,
+      },
+      w,
+    );
+    return Ok(());
   }
 }
 

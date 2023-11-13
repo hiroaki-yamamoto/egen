@@ -1,4 +1,5 @@
 use ::std::collections::HashMap;
+use ::std::sync::Arc;
 
 use ::serde::Deserialize;
 
@@ -6,6 +7,7 @@ use ::serde::Deserialize;
 use crate::setter;
 
 use super::field::Field;
+use super::interface::IRustAttributes;
 use super::rs::Rust;
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -24,4 +26,10 @@ impl Structure {
   setter!(members, HashMap<String, Field>);
   #[cfg(test)]
   setter!(rust, Option<Rust>);
+}
+
+impl IRustAttributes for Structure {
+  fn rust(&self) -> Arc<Option<Rust>> {
+    return Arc::new(self.rust);
+  }
 }

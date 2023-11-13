@@ -1,8 +1,10 @@
 use ::serde::Deserialize;
+use ::std::sync::Arc;
 
 #[cfg(test)]
 use crate::setter;
 
+use super::interface::IRustAttributes;
 use super::primitives::PrimitiveTypes;
 use super::rs::Rust;
 
@@ -15,6 +17,12 @@ pub struct FieldInner {
   pub rust: Option<Rust>,
   #[serde(default = "bool::default")]
   pub optional: bool,
+}
+
+impl IRustAttributes for FieldInner {
+  fn rust(&self) -> Arc<Option<Rust>> {
+    return Arc::new(self.rust);
+  }
 }
 
 #[cfg(test)]

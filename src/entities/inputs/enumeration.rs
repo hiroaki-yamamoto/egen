@@ -1,5 +1,8 @@
+use ::std::sync::Arc;
+
 use ::serde::Deserialize;
 
+use super::interface::IRustAttributes;
 use super::rs::Rust;
 
 #[cfg(test)]
@@ -19,4 +22,10 @@ impl Enumeration {
   }
   setter!(rust, Option<Rust>);
   setter!(members, Vec<String>);
+}
+
+impl IRustAttributes for Enumeration {
+  fn rust(&self) -> Arc<Option<Rust>> {
+    return Arc::new(self.rust);
+  }
 }
