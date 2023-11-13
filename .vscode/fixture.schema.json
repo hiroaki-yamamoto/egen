@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fixture",
+  "title": "Fixture Schema",
+  "description": "Fixture Schema",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": [
+        "struct",
+        "enum"
+      ]
+    },
+    "rust": {
+      "$ref": "#/$defs/rustOptions"
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "$defs": {
+    "rustOptions": {
+      "type": "object",
+      "properties": {
+        "derive": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attrs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
