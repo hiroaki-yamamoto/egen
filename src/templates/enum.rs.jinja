@@ -1,5 +1,5 @@
-{% for module in rust_modules -%}
-use super::{{ module }}
+{% for module in tags -%}
+use super::{{ module | rust_module }}
 {% endfor -%}
 
 {% if rust is not none -%}

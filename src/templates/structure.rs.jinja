@@ -1,5 +1,5 @@
-{% for module in rust_modules -%}
-use super::{{ module }}
+{% for module in modules -%}
+use super::{{ module  | rust_module }}
 {% endfor -%}
 
 {% if rust is not none -%}
@@ -16,6 +16,6 @@ pub struct {{ class_name }} {
   #[{{ attr }}]
     {% endfor -%}
   {% endif -%}
-  pub {{ name }}: {{ fld.f_type | into_rust_type }},
+  pub {{ name }}: {{ fld.f_type | rust_type }},
 {% endfor -%}
 }
