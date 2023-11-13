@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "ci",
     "entities",
-    "service"
+    "service",
+    "template"
   ]
 }
