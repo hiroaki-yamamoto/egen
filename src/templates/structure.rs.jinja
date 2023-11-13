@@ -2,7 +2,13 @@
 use super::{{ module }}
 {% endfor -%}
 
-
+{% if rust is not none -%}
+  {% if rust.derive is not none -%}
+#[derive({{ rust.derive | join(",") }})]
+  {% for attr in rust.attrs -%}
+#[{{ attr }}]
+  {% endfor -%}
+{% endif -%}
 pub struct {{ class_name }} {
 {% for (name, fld) in members -%}
   {% if fld.rust is not none -%}
