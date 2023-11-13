@@ -1,5 +1,8 @@
 use ::serde::Deserialize;
 
+#[cfg(test)]
+use crate::setter;
+
 use super::primitives::PrimitiveTypes;
 use super::rs::Rust;
 
@@ -23,6 +26,9 @@ impl FieldInner {
       optional: false,
     };
   }
+  setter!(f_type, PrimitiveTypes);
+  setter!(rust, Option<Rust>);
+  setter!(optional, bool);
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq)]

@@ -20,10 +20,12 @@ pub fn complex() -> Root {
       "detailedText".to_string() => Field::Inner(FieldInner {
         f_type: PrimitiveTypes::String,
         rust: Some(Rust::new().attrs(Some(vec!["serde(rename = \"detail\")".to_string()]))),
+        optional: false,
       }),
       "simpleArray".to_string() => Field::Inner(FieldInner {
         f_type: PrimitiveTypes::Array(ArrayProperty::new(PrimitiveTypes::String)),
         rust: Some(Rust::new().attrs(Some(vec!["serde(rename = \"lst\")".to_string()]))),
+        optional: false,
       }),
       "referenceArray".to_string() => Field::Primitive(PrimitiveTypes::Array(
         ArrayProperty::new(PrimitiveTypes::Use("SimpleStructure".to_string()))
