@@ -1,0 +1,16 @@
+{% for module in rust_modules -%}
+use super::{{ module }}
+{% endfor -%}
+
+{% if rust is not none -%}
+  {% if rust.derive is not none -%}
+#[derive({{ rust.derive | join(",") }})]
+  {% for attr in rust.attrs -%}
+#[{{ attr }}]
+  {% endfor -%}
+{% endif -%}
+pub enum {{ class_name }} {
+{% for name in members -%}
+  {{ name }},
+{% endfor -%}
+}
