@@ -13,7 +13,6 @@ use super::rs::Rust;
 pub struct Structure {
   pub members: HashMap<String, Field>,
   pub rust: Option<Rust>,
-  pub optional: Option<Vec<String>>,
 }
 
 impl Structure {
@@ -25,6 +24,4 @@ impl Structure {
   setter!(members, HashMap<String, Field>);
   #[cfg(test)]
   setter!(rust, Option<Rust>);
-  #[cfg(test)]
-  setter!(optional, Option<Vec<String>>);
 }

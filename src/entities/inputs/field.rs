@@ -10,6 +10,19 @@ pub struct FieldInner {
   #[serde(rename = "type")]
   pub f_type: PrimitiveTypes,
   pub rust: Option<Rust>,
+  #[serde(default = "bool::default")]
+  pub optional: bool,
+}
+
+#[cfg(test)]
+impl FieldInner {
+  pub fn new(f_type: PrimitiveTypes) -> Self {
+    return Self {
+      f_type,
+      rust: None,
+      optional: false,
+    };
+  }
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq)]
@@ -26,6 +39,7 @@ impl From<Field> for FieldInner {
       Field::Inner(inner) => inner,
       Field::Primitive(primitive) => FieldInner {
         f_type: primitive,
+        optional: false,
         rust: None,
       },
     }
@@ -39,10 +53,7 @@ mod test {
 
   #[test]
   fn test_field_inner_from_field() {
-    let correct = FieldInner {
-      f_type: PrimitiveTypes::String,
-      rust: None,
-    };
+    let correct = FieldInner::new(PrimitiveTypes::String);
     let field = Field::Inner(correct.clone());
     let field_inner: FieldInner = field.into();
     assert_eq!(field_inner, correct);
@@ -50,10 +61,7 @@ mod test {
 
   #[test]
   fn test_field_inner_from_primitive() {
-    let correct = FieldInner {
-      f_type: PrimitiveTypes::String,
-      rust: None,
-    };
+    let correct = FieldInner::new(PrimitiveTypes::String);
     let field = Field::Primitive(PrimitiveTypes::String);
     let field_inner: FieldInner = field.into();
     assert_eq!(field_inner, correct);

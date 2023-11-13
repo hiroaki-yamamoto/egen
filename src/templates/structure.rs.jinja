@@ -1,0 +1,15 @@
+{% for module in rust_modules -%}
+use super::{{ module }}
+{% endfor -%}
+
+
+pub struct {{ class_name }} {
+  {% for (name, fld) in members -%}
+  {% if fld.rust is not none -%}
+  {% for attr in fld.rust.attrs -%}
+    #[{{ attr }}]
+  {% endfor -%}
+  {% endif -%}
+    pub {{ name }}: {{ fld.f_type | into_rust_type }},
+  {% endfor -%}
+}

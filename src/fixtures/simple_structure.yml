@@ -17,34 +17,33 @@ members:
   uint128: u128
   boolean: bool
   text: string
-  optFloat32: f32
-  optFloat64: f64
-  optInt8: i8
-  optInt16: i16
-  optInt32: i32
-  optInt64: i64
-  optInt128: i128
-  optUint8: u8
+  optFloat32:
+    type: f32
+    optional: true
+  optFloat64:
+    type: f64
+    optional: true
+  optInt8:
+    type: i8
+    optional: true
+  optInt16:
+    type: i16
+    optional: true
+  optInt32:
+    type: i32
+    optional: true
+  optInt64:
+    type: i64
+    optional: true
+  optInt128:
+    type: i128
+    optional: true
+  optUint8:
+    type: u8
+    optional: true
   optUint16: u16
   optUint32: u32
   optUint64: u64
   optUint128: u128
   optBoolean: bool
   optText: string
-optional:
-  [
-    optFloat32,
-    optFloat64,
-    optInt8,
-    optInt16,
-    optInt32,
-    optInt64,
-    optInt128,
-    optUint8,
-    optUint16,
-    optUint32,
-    optUint64,
-    optUint128,
-    optBoolean,
-    optText,
-  ]

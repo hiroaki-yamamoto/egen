@@ -1,9 +1,0 @@
-{% for module in rust_modules -%}
-use super::{{ module }}
-{% endfor -%}
-
-pub struct {{ class_name }} {
-{% for (name, fld) in members -%}
-  pub {{ name }}: fld
-{% endfor -%}
-}
