@@ -4,6 +4,7 @@ use ::std::sync::Arc;
 
 use ::minijinja::{Environment, Template};
 
+use crate::entities::inputs::Root;
 use crate::entities::intermediate::ITag;
 
 use super::interface::IOutput;
@@ -59,5 +60,15 @@ where
 {
   type Writer = Writer;
 
-  fn render(&self, writer: &mut Self::Writer) -> OutputResult<()> {}
+  fn render(
+    &self,
+    writer: &mut Self::Writer,
+    root: &Root,
+  ) -> OutputResult<()> {
+  }
+}
+
+#[cfg(test)]
+pub mod test {
+  use super::IOutput;
 }
