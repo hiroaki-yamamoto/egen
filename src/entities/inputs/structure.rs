@@ -14,7 +14,7 @@ use super::rs::Rust;
 #[serde(rename_all = "camelCase")]
 pub struct Structure {
   pub members: HashMap<String, Field>,
-  pub rust: Option<Rust>,
+  pub rust: Arc<Option<Rust>>,
 }
 
 impl Structure {
@@ -25,11 +25,17 @@ impl Structure {
   #[cfg(test)]
   setter!(members, HashMap<String, Field>);
   #[cfg(test)]
-  setter!(rust, Option<Rust>);
+  setter!(rust, Arc<Option<Rust>>);
+}
+
+impl IRustAttributes for &Structure {
+  fn rust(&self) -> Arc<Option<Rust>> {
+    return self.rust.clone();
+  }
 }
 
 impl IRustAttributes for Structure {
   fn rust(&self) -> Arc<Option<Rust>> {
-    return Arc::new(self.rust);
+    return self.rust.clone();
   }
 }

@@ -1,9 +1,9 @@
-use ::serde::Deserialize;
+use ::serde::{Deserialize, Serialize};
 
 #[cfg(test)]
 use crate::setter;
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default, Serialize)]
 #[cfg_attr(test, derive(Clone))]
 #[serde(rename_all = "camelCase")]
 pub struct Rust {

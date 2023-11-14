@@ -14,14 +14,20 @@ use super::rs::Rust;
 pub struct FieldInner {
   #[serde(rename = "type")]
   pub f_type: PrimitiveTypes,
-  pub rust: Option<Rust>,
+  pub rust: Arc<Option<Rust>>,
   #[serde(default = "bool::default")]
   pub optional: bool,
 }
 
+impl IRustAttributes for &FieldInner {
+  fn rust(&self) -> Arc<Option<Rust>> {
+    return self.rust.clone();
+  }
+}
+
 impl IRustAttributes for FieldInner {
   fn rust(&self) -> Arc<Option<Rust>> {
-    return Arc::new(self.rust);
+    return self.rust.clone();
   }
 }
 
@@ -30,12 +36,12 @@ impl FieldInner {
   pub fn new(f_type: PrimitiveTypes) -> Self {
     return Self {
       f_type,
-      rust: None,
+      rust: Arc::new(None),
       optional: false,
     };
   }
-  setter!(f_type, PrimitiveTypes);
-  setter!(rust, Option<Rust>);
+  // setter!(f_type, PrimitiveTypes);
+  // setter!(rust, Arc<Option<Rust>>);
   setter!(optional, bool);
 }
 
@@ -54,7 +60,7 @@ impl From<Field> for FieldInner {
       Field::Primitive(primitive) => FieldInner {
         f_type: primitive,
         optional: false,
-        rust: None,
+        rust: Arc::new(None),
       },
     }
   }

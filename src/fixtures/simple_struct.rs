@@ -1,3 +1,5 @@
+use ::std::sync::Arc;
+
 use crate::entities::inputs::{
   Field, FieldInner, PrimitiveTypes, Root, Rust, Structure,
 };
@@ -5,14 +7,14 @@ use ::map_macro::hash_map_e;
 
 pub fn struct_simple() -> Root {
   return Structure::new()
-    .rust(Some(Rust {
+    .rust(Arc::new(Some(Rust {
       derive: Some(vec![
         "Debug".to_string(),
         "Clone".to_string(),
         "::serde:Serialize".to_string(),
       ]),
       attrs: Some(vec!["serde(rename_all = \"camelCase\")".to_string()]),
-    }))
+    })))
     .members(hash_map_e! {
       "float32".to_string() => Field::Primitive(PrimitiveTypes::F32),
       "float64".to_string() => Field::Primitive(PrimitiveTypes::F64),
