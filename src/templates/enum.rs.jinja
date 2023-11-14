@@ -5,6 +5,7 @@ use super::{{ module }}
 {% if rust is not none -%}
   {% if rust.derive is not none -%}
 #[derive({{ rust.derive | join(",") }})]
+  {% endif -%}
   {% for attr in rust.attrs -%}
 #[{{ attr }}]
   {% endfor -%}

@@ -101,7 +101,8 @@ pub mod test {
   fn test_simple_rendering() {
     let root = struct_simple();
     let tag = Tag::new("simple_structure".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/simple_struct.rs.out");
+    let correct =
+      include_str!("../../fixtures/simple_struct.rs.out").to_string();
 
     let proc = Rust::new(vec![]).unwrap();
     let result = Vec::<u8>::new();
@@ -109,6 +110,15 @@ pub mod test {
     proc.render(&mut writer, &root, Arc::new(tag)).unwrap();
     let result = writer.get_ref();
     let result = String::from_utf8(result.to_vec()).unwrap();
-    assert_eq!(result, correct);
+    assert_eq!(
+      result,
+      correct,
+      "{}",
+      format!(
+        "\n\nResult:\n{result}\n\nCorrect:\n{correct}\n",
+        result = result,
+        correct = correct
+      )
+    );
   }
 }
