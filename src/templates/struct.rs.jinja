@@ -4,19 +4,19 @@ use super::{{ module }}
 
 {% if rust is not none -%}
   {% if rust.derive is not none -%}
-#[derive({{ rust.derive | join(",") }})]
+#[derive({{ rust.derive | join(", ") }})]
   {%- endif %}
   {%- for attr in rust.attrs %}
 #[{{ attr }}]
   {%- endfor %}
 {%- endif %}
 pub struct {{ class_name }} {
-{% for (name, fld) in members -%}
+{% for (name, fld) in members | sort -%}
   {% if fld.rust is not none -%}
     {% for attr in fld.rust.attrs -%}
   #[{{ attr }}]
     {% endfor -%}
   {% endif -%}
-  pub {{ name }}: {{ fld.f_type | rust_type }},
+{{ "  " }}pub {{ name }}: {{ fld | rust_type }},
 {% endfor -%}
 }

@@ -1,4 +1,4 @@
-use ::serde::Deserialize;
+use ::serde::{Deserialize, Serialize};
 use ::std::sync::Arc;
 
 #[cfg(test)]
@@ -8,8 +8,7 @@ use super::interface::IRustAttributes;
 use super::primitives::PrimitiveTypes;
 use super::rs::Rust;
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
-#[cfg_attr(test, derive(Clone))]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct FieldInner {
   #[serde(rename = "type")]
@@ -45,7 +44,7 @@ impl FieldInner {
   setter!(optional, bool);
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[cfg_attr(test, derive(Clone))]
 #[serde(rename_all = "camelCase", untagged)]
 pub enum Field {
@@ -55,10 +54,16 @@ pub enum Field {
 
 impl From<Field> for FieldInner {
   fn from(field: Field) -> Self {
+    return (&field).into();
+  }
+}
+
+impl From<&Field> for FieldInner {
+  fn from(field: &Field) -> Self {
     match field {
-      Field::Inner(inner) => inner,
+      Field::Inner(inner) => inner.clone(),
       Field::Primitive(primitive) => FieldInner {
-        f_type: primitive,
+        f_type: primitive.clone(),
         optional: false,
         rust: Arc::new(None),
       },

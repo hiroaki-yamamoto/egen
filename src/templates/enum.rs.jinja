@@ -11,7 +11,7 @@ use super::{{ module }}
   {% endfor -%}
 {% endif -%}
 pub enum {{ class_name }} {
-{% for name in members -%}
+{% for name in members | sort -%}
   {{ name }},
 {% endfor -%}
 }

@@ -2,13 +2,22 @@ use ::std::io::Write;
 use ::std::marker::PhantomData;
 use ::std::sync::Arc;
 
+use ::minijinja::value::ViaDeserialize;
 use ::minijinja::{context, Environment, Template};
 
-use crate::entities::inputs::{IRustAttributes, Root};
+use crate::entities::inputs::{FieldInner, IMembers, IRustAttributes, Root};
 use crate::entities::intermediate::ITag;
 
 use super::interface::IOutput;
 use super::OutputResult;
+
+fn convert_type(fld_inner: ViaDeserialize<FieldInner>) -> String {
+  let inner = fld_inner.f_type.to_string();
+  if fld_inner.optional {
+    return format!("Option<{}>", inner);
+  }
+  return inner;
+}
 
 pub struct Rust<'env, Writer>
 where
@@ -38,6 +47,7 @@ where
       "struct",
       include_str!("../../templates/struct.rs.jinja"),
     )?;
+    env.add_filter("rust_type", convert_type);
     env.add_template("enum", include_str!("../../templates/enum.rs.jinja"))?;
     return Ok(Self {
       env,
@@ -66,18 +76,19 @@ where
     root: &Root,
     root_tag: Arc<dyn ITag>,
   ) -> OutputResult<()> {
-    let template = match root {
-      Root::Struct(_) => self.struct_template()?,
-      Root::Enum(_) => self.enum_template()?,
-    };
-    let rust_attrs: Arc<dyn IRustAttributes> = match root {
-      Root::Struct(s) => Arc::new(s),
-      Root::Enum(e) => Arc::new(e),
+    let (template, rust_attrs, members): (
+      Template,
+      Arc<dyn IRustAttributes>,
+      Arc<dyn IMembers>,
+    ) = match root {
+      Root::Struct(s) => (self.struct_template()?, Arc::new(s), Arc::new(s)),
+      Root::Enum(e) => (self.enum_template()?, Arc::new(e), Arc::new(e)),
     };
     template.render_to_write(
       context! {
         class_name => root_tag.class_name().to_string(),
         rust => rust_attrs.rust().as_ref(),
+        members => members.members(),
       },
       writer,
     )?;

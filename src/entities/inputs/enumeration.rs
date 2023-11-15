@@ -2,7 +2,8 @@ use ::std::sync::Arc;
 
 use ::serde::Deserialize;
 
-use super::interface::IRustAttributes;
+use super::field::FieldInner;
+use super::interface::{IMembers, IRustAttributes};
 use super::rs::Rust;
 
 #[cfg(test)]
@@ -30,8 +31,10 @@ impl IRustAttributes for &Enumeration {
   }
 }
 
-impl IRustAttributes for Enumeration {
-  fn rust(&self) -> Arc<Option<Rust>> {
-    return self.rust.clone();
+impl IMembers for &Enumeration {
+  fn members(&self) -> Vec<(String, Option<FieldInner>)> {
+    let members: Vec<(String, Option<FieldInner>)> =
+      self.members.iter().map(|key| (key.clone(), None)).collect();
+    return members;
   }
 }

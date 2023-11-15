@@ -1,9 +1,8 @@
-use ::serde::Deserialize;
+use ::serde::{Deserialize, Serialize};
 
 use super::primitives::PrimitiveTypes;
 
-#[derive(Debug, Deserialize, PartialEq, Eq)]
-#[cfg_attr(test, derive(Clone))]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct ArrayProperty {
   pub item: Box<PrimitiveTypes>,
