@@ -1,9 +1,9 @@
 {% for module in tags -%}
 use super::{{ module }}
-{% endfor -%}
+{%- endfor %}
 
 {% if rust is not none -%}
-  {% if rust.derive is not none -%}
+  {%- if rust.derive is not none %}
 #[derive({{ rust.derive | join(", ") }})]
   {%- endif %}
   {%- for attr in rust.attrs %}
@@ -11,12 +11,12 @@ use super::{{ module }}
   {%- endfor %}
 {%- endif %}
 pub struct {{ class_name }} {
-{% for (name, fld) in members | sort -%}
-  {% if fld.rust is not none -%}
-    {% for attr in fld.rust.attrs -%}
+{%- for (name, fld) in members | sort %}
+  {%- if fld.rust is not none %}
+    {%- for attr in fld.rust.attrs %}
   #[{{ attr }}]
-    {% endfor -%}
-  {% endif -%}
-{{ "  " }}pub {{ name }}: {{ fld | rust_type }},
-{% endfor -%}
+    {%- endfor %}
+  {%- endif %}
+  pub {{ name }}: {{ fld | rust_type }},
+{%- endfor %}
 }

@@ -102,21 +102,16 @@ pub mod test {
 
   use ::bytes::buf::BufMut;
 
+  use crate::entities::inputs::Root;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::simple_struct::struct_simple;
+  use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
   use crate::test_utils::assert_txt_eq;
 
   use super::IOutput;
   use super::Rust;
 
-  #[test]
-  fn test_simple_rendering() {
-    let root = struct_simple();
-    let tag = Tag::new("simple_structure".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/simple_struct.rs.out")
-      .trim()
-      .to_string();
-
+  fn process(root: Root, tag: Tag, correct: String) {
     let proc = Rust::new(vec![]).unwrap();
     let result = Vec::<u8>::new();
     let mut writer = result.writer();
@@ -127,5 +122,27 @@ pub mod test {
       .trim()
       .to_string();
     assert_txt_eq(&result, &correct);
+  }
+
+  #[test]
+  fn test_simple_rendering() {
+    let root = struct_simple();
+    let tag = Tag::new("simple_structure".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/simple_struct.rs.out")
+      .trim()
+      .to_string();
+
+    process(root, tag, correct);
+  }
+
+  #[test]
+  fn test_attr_field() {
+    let root = struct_w_fld_attr();
+    let tag = Tag::new("struct_has_field_attr".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/struct_w_field_attr.rs.out")
+      .trim()
+      .to_string();
+
+    process(root, tag, correct);
   }
 }

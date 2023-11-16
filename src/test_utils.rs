@@ -2,7 +2,7 @@ use ::console::Style;
 use ::similar::{ChangeTag, TextDiff};
 
 pub fn assert_txt_eq(result: &str, correct: &str) {
-  let diff = TextDiff::from_lines(correct, result)
+  let diff = TextDiff::from_lines(result, correct)
     .iter_all_changes()
     .map(|change| {
       let (sign, style) = match change.tag() {
