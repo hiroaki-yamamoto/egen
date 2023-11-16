@@ -105,6 +105,7 @@ pub mod test {
   use crate::entities::inputs::Root;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::simple_struct::struct_simple;
+  use crate::fixtures::struct_array::struct_array;
   use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
   use crate::test_utils::assert_txt_eq;
 
@@ -140,6 +141,17 @@ pub mod test {
     let root = struct_w_fld_attr();
     let tag = Tag::new("struct_has_field_attr".to_string()).unwrap();
     let correct = include_str!("../../fixtures/struct_w_field_attr.rs.out")
+      .trim()
+      .to_string();
+
+    process(root, tag, correct);
+  }
+
+  #[test]
+  fn test_array() {
+    let root = struct_array();
+    let tag = Tag::new("struct_array".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/struct_array.rs.out")
       .trim()
       .to_string();
 
