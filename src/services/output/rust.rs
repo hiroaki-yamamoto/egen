@@ -101,11 +101,10 @@ pub mod test {
   use ::std::sync::Arc;
 
   use ::bytes::buf::BufMut;
-  use ::console::Style;
-  use ::similar::{ChangeTag, TextDiff};
 
   use crate::entities::intermediate::Tag;
   use crate::fixtures::simple_struct::struct_simple;
+  use crate::test_utils::assert_txt_eq;
 
   use super::IOutput;
   use super::Rust;
@@ -127,18 +126,6 @@ pub mod test {
       .unwrap()
       .trim()
       .to_string();
-    let diff = TextDiff::from_lines(&correct, &result)
-      .iter_all_changes()
-      .map(|change| {
-        let (sign, style) = match change.tag() {
-          ChangeTag::Insert => ("+", Style::new().green()),
-          ChangeTag::Delete => ("-", Style::new().red()),
-          ChangeTag::Equal => (" ", Style::new()),
-        };
-        format!("{}{}", style.apply_to(sign), style.apply_to(change))
-      })
-      .collect::<Vec<String>>()
-      .join("");
-    assert_eq!(result, correct, "{}", diff);
+    assert_txt_eq(&result, &correct);
   }
 }
