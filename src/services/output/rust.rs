@@ -105,6 +105,7 @@ pub mod test {
   use crate::entities::inputs::Root;
   use crate::entities::intermediate::{ITag, Tag};
   use crate::fixtures::reference::reference;
+  use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::simple_struct::struct_simple;
   use crate::fixtures::struct_array::struct_array;
   use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
@@ -173,5 +174,16 @@ pub mod test {
       &[Arc::new(Tag::new("simple_structure".to_string()).unwrap())],
       correct,
     );
+  }
+
+  #[test]
+  fn test_self_reference() {
+    let root = self_reference();
+    let tag = Tag::new("self_reference".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/self_reference.rs.out")
+      .trim()
+      .to_string();
+
+    process(root, tag, &[], correct);
   }
 }
