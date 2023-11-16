@@ -1,0 +1,5 @@
+use super::simple_structure;
+
+pub struct Reference {
+  pub reference: Box<SimpleStructure>,
+}

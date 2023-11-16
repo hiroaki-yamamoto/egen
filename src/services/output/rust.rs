@@ -36,7 +36,7 @@ where
   /// ### Parameters:
   /// * `modules` - The list of modules to be imported. Note that this should be
   ///  the list of modules that is proceeded by ImportExtractor.
-  pub fn new(modules: Vec<Arc<dyn ITag>>) -> OutputResult<Self> {
+  pub fn new(modules: &[Arc<dyn ITag>]) -> OutputResult<Self> {
     let modules: Vec<String> = modules
       .iter()
       .map(|tag| tag.rs_module_name().to_string())
@@ -103,7 +103,8 @@ pub mod test {
   use ::bytes::buf::BufMut;
 
   use crate::entities::inputs::Root;
-  use crate::entities::intermediate::Tag;
+  use crate::entities::intermediate::{ITag, Tag};
+  use crate::fixtures::reference::reference;
   use crate::fixtures::simple_struct::struct_simple;
   use crate::fixtures::struct_array::struct_array;
   use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
@@ -112,8 +113,8 @@ pub mod test {
   use super::IOutput;
   use super::Rust;
 
-  fn process(root: Root, tag: Tag, correct: String) {
-    let proc = Rust::new(vec![]).unwrap();
+  fn process(root: Root, tag: Tag, refs: &[Arc<dyn ITag>], correct: String) {
+    let proc = Rust::new(refs).unwrap();
     let result = Vec::<u8>::new();
     let mut writer = result.writer();
     proc.render(&mut writer, &root, Arc::new(tag)).unwrap();
@@ -133,7 +134,7 @@ pub mod test {
       .trim()
       .to_string();
 
-    process(root, tag, correct);
+    process(root, tag, &[], correct);
   }
 
   #[test]
@@ -144,7 +145,7 @@ pub mod test {
       .trim()
       .to_string();
 
-    process(root, tag, correct);
+    process(root, tag, &[], correct);
   }
 
   #[test]
@@ -155,6 +156,22 @@ pub mod test {
       .trim()
       .to_string();
 
-    process(root, tag, correct);
+    process(root, tag, &[], correct);
+  }
+
+  #[test]
+  fn test_reference() {
+    let root = reference();
+    let tag = Tag::new("reference".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/reference.rs.out")
+      .trim()
+      .to_string();
+
+    process(
+      root,
+      tag,
+      &[Arc::new(Tag::new("simple_structure".to_string()).unwrap())],
+      correct,
+    );
   }
 }

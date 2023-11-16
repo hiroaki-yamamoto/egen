@@ -1,8 +1,8 @@
-{% for module in tags -%}
-use super::{{ module }}
-{%- endfor %}
+{%- for module in tags %}
+use super::{{ module }};
+{% endfor -%}
 
-{% if rust is not none -%}
+{%- if rust is not none %}
   {%- if rust.derive is not none %}
 #[derive({{ rust.derive | join(", ") }})]
   {%- endif %}
