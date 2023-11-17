@@ -6,12 +6,12 @@ use ::std::sync::Arc;
 use ::map_macro::hash_map_e;
 
 use ::minijinja::value::{Value, ViaDeserialize};
-use ::minijinja::{context, Environment, Template};
+use ::minijinja::{Environment, Template};
 
-use crate::entities::inputs::{FieldInner, IMembers, IRustAttributes, Root};
+use crate::entities::inputs::FieldInner;
 use crate::entities::intermediate::ITag;
 
-use super::interface::IOutput;
+use super::interface::{IOutput, ITemplate};
 use super::OutputResult;
 
 #[allow(dead_code)]
@@ -66,7 +66,12 @@ where
       _w: PhantomData,
     });
   }
+}
 
+impl<'env, Writer> ITemplate for ZodTS<'env, Writer>
+where
+  Writer: Write,
+{
   fn struct_template(&self) -> OutputResult<Template> {
     return Ok(self.env.get_template("struct")?);
   }
@@ -81,31 +86,6 @@ where
   Writer: Write,
 {
   type Writer = Writer;
-
-  fn render(
-    &self,
-    writer: &mut Self::Writer,
-    root: &Root,
-    root_tag: Arc<dyn ITag>,
-  ) -> OutputResult<()> {
-    let (template, rust_attrs, members): (
-      Template,
-      Arc<dyn IRustAttributes>,
-      Arc<dyn IMembers>,
-    ) = match root {
-      Root::Struct(s) => (self.struct_template()?, Arc::new(s), Arc::new(s)),
-      Root::Enum(e) => (self.enum_template()?, Arc::new(e), Arc::new(e)),
-    };
-    template.render_to_write(
-      context! {
-        class_name => root_tag.class_name().to_string(),
-        rust => rust_attrs.rust().as_ref(),
-        members => members.members(),
-      },
-      writer,
-    )?;
-    return Ok(());
-  }
 }
 
 #[cfg(test)]
