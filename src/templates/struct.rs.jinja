@@ -1,4 +1,4 @@
-{%- for module in tags %}
+{% for module in tags | sort -%}
 use super::{{ module }};
 {% endfor -%}
 

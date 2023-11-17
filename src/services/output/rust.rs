@@ -104,6 +104,7 @@ pub mod test {
 
   use crate::entities::inputs::Root;
   use crate::entities::intermediate::{ITag, Tag};
+  use crate::fixtures::complex::complex;
   use crate::fixtures::reference::reference;
   use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::simple_struct::struct_simple;
@@ -185,5 +186,23 @@ pub mod test {
       .to_string();
 
     process(root, tag, &[], correct);
+  }
+
+  #[test]
+  fn test_complex() {
+    let root = complex();
+    let tag = Tag::new("complex".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/complex.rs.out")
+      .trim()
+      .to_string();
+    process(
+      root,
+      tag,
+      &[
+        Arc::new(Tag::new("simple_structure".to_string()).unwrap()),
+        Arc::new(Tag::new("reference".to_string()).unwrap()),
+      ],
+      correct,
+    );
   }
 }

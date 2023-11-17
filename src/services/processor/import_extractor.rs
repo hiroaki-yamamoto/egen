@@ -69,6 +69,9 @@ impl IImportExtractor for ImportExtractor {
 
 #[cfg(test)]
 mod test {
+  use ::map_macro::hash_set;
+  use ::std::collections::HashSet;
+
   use super::IImportExtractor;
   use super::ImportExtractor;
   use super::ImportExtractorError;
@@ -131,10 +134,10 @@ mod test {
 
   #[test]
   fn test_array_with_reference() {
-    let correct: Vec<Tag> = vec![
+    let correct = hash_set! {
       Tag::new("simple_structure".to_string()).unwrap(),
       Tag::new("reference".to_string()).unwrap(),
-    ];
+    };
     let doc = complex();
 
     let me = Tag::new("complex".to_string()).unwrap();
@@ -147,7 +150,8 @@ mod test {
       me.clone(),
     ]);
 
-    let result = extractor.extract(&me, &doc).unwrap();
+    let result: HashSet<_> =
+      extractor.extract(&me, &doc).unwrap().into_iter().collect();
     assert!(result == correct, "result: {:?}", result)
   }
 
