@@ -11,6 +11,7 @@ use crate::entities::intermediate::ITag;
 use super::interface::IOutput;
 use super::OutputResult;
 
+#[allow(dead_code)]
 fn convert_type(fld_inner: ViaDeserialize<FieldInner>) -> String {
   let inner = fld_inner.f_type.to_string();
   if fld_inner.optional {
