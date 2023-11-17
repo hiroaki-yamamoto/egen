@@ -1,0 +1,7 @@
+import { z } from "zod";
+
+export const {{ name }} = z.enum([
+  {%- for name in members | sort %}
+  "{{ name }}",
+  {%- endfor %}
+]);
