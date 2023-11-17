@@ -1,17 +1,17 @@
 {% for module in tags -%}
 use super::{{ module }}
-{% endfor -%}
+{%- endfor %}
 
-{% if rust is not none -%}
-  {% if rust.derive is not none -%}
-#[derive({{ rust.derive | join(",") }})]
-  {% endif -%}
-  {% for attr in rust.attrs -%}
+{%- if rust is not none %}
+  {%- if rust.derive is not none %}
+#[derive({{ rust.derive | join(", ") }})]
+  {%- endif %}
+  {%- for attr in rust.attrs %}
 #[{{ attr }}]
-  {% endfor -%}
-{% endif -%}
+  {%- endfor %}
+{%- endif %}
 pub enum {{ class_name }} {
-{% for name in members | sort -%}
+{%- for (name, _) in members | sort %}
   {{ name }},
-{% endfor -%}
+{%- endfor %}
 }

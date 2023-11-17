@@ -106,6 +106,7 @@ pub mod test {
   use crate::entities::inputs::Root;
   use crate::entities::intermediate::{ITag, Tag};
   use crate::fixtures::complex::complex;
+  use crate::fixtures::enumeration::enumeration;
   use crate::fixtures::reference::reference;
   use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::simple_struct::struct_simple;
@@ -205,5 +206,15 @@ pub mod test {
       ],
       correct,
     );
+  }
+
+  #[test]
+  fn test_enum() {
+    let root = enumeration();
+    let tag = Tag::new("enumeration".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/enumeration.rs.out")
+      .trim()
+      .to_string();
+    process(root, tag, &[], correct);
   }
 }
