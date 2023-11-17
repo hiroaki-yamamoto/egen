@@ -41,5 +41,8 @@ pub fn complex() -> Root {
       "selfReferenceArray".to_string() => Field::Primitive(PrimitiveTypes::Array(
         ArrayProperty::new(PrimitiveTypes::Use("Complex".to_string()))
       )),
+      "secondReference".to_string() => Field::Primitive(
+        PrimitiveTypes::Use("Reference".to_string())
+      )
     }).into();
 }

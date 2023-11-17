@@ -131,8 +131,10 @@ mod test {
 
   #[test]
   fn test_array_with_reference() {
-    let correct: Vec<Tag> =
-      vec![Tag::new("simple_structure".to_string()).unwrap()];
+    let correct: Vec<Tag> = vec![
+      Tag::new("simple_structure".to_string()).unwrap(),
+      Tag::new("reference".to_string()).unwrap(),
+    ];
     let doc = complex();
 
     let me = Tag::new("complex".to_string()).unwrap();
