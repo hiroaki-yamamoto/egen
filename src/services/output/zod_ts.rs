@@ -56,7 +56,7 @@ where
       "struct",
       include_str!("../../templates/struct.zod.ts.jinja"),
     )?;
-    env.add_filter("zod_type", convert_type);
+    env.add_filter("type", convert_type);
     env.add_template(
       "enum",
       include_str!("../../templates/enum.zod.ts.jinja"),

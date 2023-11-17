@@ -6,6 +6,6 @@ import { {{ tag.class }} } from "./{{ tag.module }}.zod.ts";
 
 export const {{ name }} = z.object({
   {%- for (name, fld) in members | sort %}
-  {{ name }}: {{ fld | zod_type }},
+  {{ name }}: {{ fld | type }},
   {%- endfor %}
 });

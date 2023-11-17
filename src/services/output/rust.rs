@@ -56,7 +56,7 @@ where
       "struct",
       include_str!("../../templates/struct.rs.jinja"),
     )?;
-    env.add_filter("rust_type", convert_type);
+    env.add_filter("type", convert_type);
     env.add_template("enum", include_str!("../../templates/enum.rs.jinja"))?;
     return Ok(Self {
       env,

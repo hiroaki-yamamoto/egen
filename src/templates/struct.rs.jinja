@@ -17,6 +17,6 @@ pub struct {{ class_name }} {
   #[{{ attr }}]
     {%- endfor %}
   {%- endif %}
-  pub {{ name }}: {{ fld | rust_type }},
+  pub {{ name }}: {{ fld | type }},
 {%- endfor %}
 }
