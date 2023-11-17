@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, ::serde:Serialize)]
+#[derive(Debug, Clone, ::serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SimpleStructure {
   pub boolean: bool,

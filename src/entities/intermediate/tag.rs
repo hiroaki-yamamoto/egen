@@ -76,6 +76,8 @@ impl ITag for Tag {
 
 #[cfg(test)]
 mod test {
+  use ::std::sync::Arc;
+
   use super::super::itag::ITag;
   use super::Tag;
 
@@ -87,10 +89,11 @@ mod test {
   }
 
   #[test]
-  fn test_rs_module_name() {
+  fn test_rs_tag() {
     let tag = Tag::new("@ cla\tss_na||☺Me-te\nst|\\]';".to_string()).unwrap();
-    let name = tag.rs_module_name();
-    assert!(name.as_ref() == "class_name_test", "name: {:?}", name);
+    let result = tag.rs_module_name();
+    let correct = Arc::new("class_name_test".to_string());
+    assert_eq!(result, correct);
   }
 
   #[test]

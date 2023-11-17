@@ -1,5 +1,5 @@
-{% for module in tags | sort -%}
-use super::{{ module }};
+{% for tag in tags | sort -%}
+use super::{{ tag.module }}::{{ tag.class }};
 {% endfor -%}
 
 {%- if rust is not none %}

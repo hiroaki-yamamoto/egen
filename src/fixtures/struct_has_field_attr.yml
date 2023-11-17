@@ -1,4 +1,5 @@
 type: struct
+derive: ["::serde::Serialize"]
 members:
   test:
     type: string

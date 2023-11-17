@@ -11,7 +11,7 @@ pub fn struct_simple() -> Root {
       derive: Some(vec![
         "Debug".to_string(),
         "Clone".to_string(),
-        "::serde:Serialize".to_string(),
+        "::serde::Serialize".to_string(),
       ]),
       attrs: Some(vec!["serde(rename_all = \"camelCase\")".to_string()]),
     })))

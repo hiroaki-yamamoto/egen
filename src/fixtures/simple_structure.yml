@@ -1,6 +1,6 @@
 type: struct
 rust:
-  derive: [Debug, Clone, "::serde:Serialize"]
+  derive: [Debug, Clone, "::serde::Serialize"]
   attrs: ['serde(rename_all = "camelCase")']
 members:
   float32: f32

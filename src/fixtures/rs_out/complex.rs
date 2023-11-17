@@ -1,5 +1,5 @@
-use super::reference;
-use super::simple_structure;
+use super::reference::Reference;
+use super::simple_structure::SimpleStructure;
 
 #[derive(Debug, ::serde::Serialize)]
 #[serde(rename_all = "camelCase")]

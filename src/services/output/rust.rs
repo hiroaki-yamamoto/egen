@@ -1,8 +1,11 @@
+use ::std::collections::HashMap;
 use ::std::io::Write;
 use ::std::marker::PhantomData;
 use ::std::sync::Arc;
 
-use ::minijinja::value::ViaDeserialize;
+use ::map_macro::hash_map_e;
+
+use ::minijinja::value::{Value, ViaDeserialize};
 use ::minijinja::{context, Environment, Template};
 
 use crate::entities::inputs::{FieldInner, IMembers, IRustAttributes, Root};
@@ -38,12 +41,17 @@ where
   /// * `modules` - The list of modules to be imported. Note that this should be
   ///  the list of modules that is proceeded by ImportExtractor.
   pub fn new(modules: &[Arc<dyn ITag>]) -> OutputResult<Self> {
-    let modules: Vec<String> = modules
+    let modules: Vec<HashMap<&str, String>> = modules
       .iter()
-      .map(|tag| tag.rs_module_name().to_string())
+      .map(|tag| {
+        hash_map_e! {
+          "module" => tag.rs_module_name().to_string(),
+          "class" => tag.class_name().to_string(),
+        }
+      })
       .collect();
     let mut env: Environment<'env> = Environment::new();
-    env.add_global("tags", modules);
+    env.add_global("tags", Value::from_seq_object(modules));
     env.add_template(
       "struct",
       include_str!("../../templates/struct.rs.jinja"),
@@ -134,7 +142,7 @@ pub mod test {
   fn test_simple_rendering() {
     let root = struct_simple();
     let tag = Tag::new("simple_structure".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/simple_struct.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/simple_structure.rs")
       .trim()
       .to_string();
 
@@ -145,7 +153,7 @@ pub mod test {
   fn test_attr_field() {
     let root = struct_w_fld_attr();
     let tag = Tag::new("struct_has_field_attr".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/struct_w_field_attr.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/struct_w_field_attr.rs")
       .trim()
       .to_string();
 
@@ -156,7 +164,7 @@ pub mod test {
   fn test_array() {
     let root = struct_array();
     let tag = Tag::new("struct_array".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/struct_array.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/struct_array.rs")
       .trim()
       .to_string();
 
@@ -167,7 +175,7 @@ pub mod test {
   fn test_reference() {
     let root = reference();
     let tag = Tag::new("reference".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/reference.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/reference.rs")
       .trim()
       .to_string();
 
@@ -183,7 +191,7 @@ pub mod test {
   fn test_self_reference() {
     let root = self_reference();
     let tag = Tag::new("self_reference".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/self_reference.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/self_reference.rs")
       .trim()
       .to_string();
 
@@ -194,7 +202,7 @@ pub mod test {
   fn test_complex() {
     let root = complex();
     let tag = Tag::new("complex".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/complex.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/complex.rs")
       .trim()
       .to_string();
     process(
@@ -212,7 +220,7 @@ pub mod test {
   fn test_enum() {
     let root = enumeration();
     let tag = Tag::new("enumeration".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/enumeration.rs.out")
+    let correct = include_str!("../../fixtures/rs_out/enumeration.rs")
       .trim()
       .to_string();
     process(root, tag, &[], correct);
