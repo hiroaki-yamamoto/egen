@@ -16,9 +16,9 @@ use super::OutputResult;
 
 #[allow(dead_code)]
 fn convert_type(fld_inner: ViaDeserialize<FieldInner>) -> String {
-  let inner = fld_inner.f_type.to_string();
+  let inner = fld_inner.f_type.to_zod_ts();
   if fld_inner.optional {
-    return format!("Option<{}>", inner);
+    return format!("{}.optional()", inner);
   }
   return inner;
 }
@@ -125,9 +125,10 @@ pub mod test {
   fn test_simple_rendering() {
     let root = struct_simple();
     let tag = Tag::new("simple_structure".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/rs_out/simple_structure.rs")
-      .trim()
-      .to_string();
+    let correct =
+      include_str!("../../fixtures/zod_ts_out/simple-structure.zod.ts")
+        .trim()
+        .to_string();
 
     process(root, tag, &[], correct);
   }

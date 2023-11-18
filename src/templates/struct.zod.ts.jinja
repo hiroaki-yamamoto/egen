@@ -4,7 +4,7 @@ import { z } from "zod";
 import { {{ tag.class }} } from "./{{ tag.module }}.zod.ts";
 {%- endfor %}
 
-export const {{ name }} = z.object({
+export const {{ class_name }} = z.object({
   {%- for (name, fld) in members | sort %}
   {{ name }}: {{ fld | type }},
   {%- endfor %}
