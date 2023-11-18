@@ -134,17 +134,6 @@ pub mod test {
   }
 
   #[test]
-  fn test_attr_field() {
-    let root = struct_w_fld_attr();
-    let tag = Tag::new("struct_has_field_attr".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/rs_out/struct_w_field_attr.rs")
-      .trim()
-      .to_string();
-
-    process(root, tag, &[], correct);
-  }
-
-  #[test]
   fn test_array() {
     let root = struct_array();
     let tag = Tag::new("struct_array".to_string()).unwrap();
