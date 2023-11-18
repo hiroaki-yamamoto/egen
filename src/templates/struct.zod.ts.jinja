@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 {%- for tag in tags | sort %}
 import { {{ tag.class }} } from "./{{ tag.module }}.zod.ts";

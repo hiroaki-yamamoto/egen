@@ -53,11 +53,12 @@ impl PrimitiveTypes {
   fn min_max(&self) -> Option<(String, String)> {
     return match self {
       PrimitiveTypes::F32 => {
-        Some((f32::MIN.to_string(), f32::MAX.to_string()))
+        Some(("-3.40282347E+38".to_string(), "3.40282347E+38".to_string()))
       }
-      PrimitiveTypes::F64 => {
-        Some((f64::MIN.to_string(), f64::MAX.to_string()))
-      }
+      PrimitiveTypes::F64 => Some((
+        "-1.7976931348623157E+308".to_string(),
+        "1.7976931348623157E+308".to_string(),
+      )),
       PrimitiveTypes::I8 => Some((i8::MIN.to_string(), i8::MAX.to_string())),
       PrimitiveTypes::I16 => {
         Some((i16::MIN.to_string(), i16::MAX.to_string()))
