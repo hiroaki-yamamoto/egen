@@ -137,9 +137,10 @@ pub mod test {
   fn test_array() {
     let root = struct_array();
     let tag = Tag::new("struct_array".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/rs_out/struct_array.rs")
-      .trim()
-      .to_string();
+    let correct =
+      include_str!("../../fixtures/zod_ts_out/struct-array.zod.ts")
+        .trim()
+        .to_string();
 
     process(root, tag, &[], correct);
   }
