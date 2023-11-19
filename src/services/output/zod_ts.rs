@@ -191,11 +191,10 @@ pub mod test {
   }
 
   #[test]
-  #[ignore]
   fn test_enum() {
     let root = enumeration();
     let tag = Tag::new("enumeration".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/rs_out/enumeration.rs")
+    let correct = include_str!("../../fixtures/zod_ts_out/enum.zod.ts")
       .trim()
       .to_string();
     process(root, tag, &[], correct);

@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-export const {{ name }} = z.enum([
-  {%- for name in members | sort %}
-  "{{ name }}",
+export const {{ class_name }} = z.enum([
+  {%- for (name, _) in members | sort %}
+  '{{ name }}',
   {%- endfor %}
 ]);
