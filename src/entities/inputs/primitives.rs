@@ -108,7 +108,7 @@ impl PrimitiveTypes {
       | PrimitiveTypes::U128 => {
         format!("z.number().max({}).min({})", max, min)
       }
-      PrimitiveTypes::Use(s) => s.to_string(),
+      PrimitiveTypes::Use(s) => format!("z.lazy(() => {})", s.to_string()),
       PrimitiveTypes::Array(arr) => {
         format!("z.array({})", arr.item.to_zod_ts())
       }
