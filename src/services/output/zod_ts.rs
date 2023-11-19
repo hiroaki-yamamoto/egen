@@ -173,11 +173,10 @@ pub mod test {
   }
 
   #[test]
-  #[ignore]
   fn test_complex() {
     let root = complex();
     let tag = Tag::new("complex".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/rs_out/complex.rs")
+    let correct = include_str!("../../fixtures/zod_ts_out/complex.zod.ts")
       .trim()
       .to_string();
     process(
