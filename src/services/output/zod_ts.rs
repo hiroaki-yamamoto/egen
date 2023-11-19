@@ -161,13 +161,13 @@ pub mod test {
   }
 
   #[test]
-  #[ignore]
   fn test_self_reference() {
     let root = self_reference();
     let tag = Tag::new("self_reference".to_string()).unwrap();
-    let correct = include_str!("../../fixtures/rs_out/self_reference.rs")
-      .trim()
-      .to_string();
+    let correct =
+      include_str!("../../fixtures/zod_ts_out/self-reference.zod.ts")
+        .trim()
+        .to_string();
 
     process(root, tag, &[], correct);
   }
