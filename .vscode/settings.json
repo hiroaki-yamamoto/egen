@@ -3,6 +3,7 @@
     "ci",
     "entities",
     "service",
-    "template"
+    "template",
+    "app"
   ]
 }

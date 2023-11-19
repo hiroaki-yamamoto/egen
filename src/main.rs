@@ -1,6 +1,11 @@
+mod cmd;
 mod entities;
 mod macros;
 mod services;
+
+use ::clap::Parser;
+
+use crate::cmd::CMD;
 
 #[cfg(test)]
 mod fixtures;
@@ -8,5 +13,5 @@ mod fixtures;
 mod test_utils;
 
 fn main() {
-  println!("Hello, world!");
+  let _ = CMD::parse();
 }
