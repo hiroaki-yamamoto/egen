@@ -57,7 +57,7 @@ impl Input {
       Self::Yaml => [OsStr::new("yaml"), OsStr::new("yml")].contains(&ext),
     };
 
-    if match_ext {
+    if !match_ext {
       return Err(CMDErr::InvalidFileName(
         file_name.to_str().unwrap().to_string(),
       ));

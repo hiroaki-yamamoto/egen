@@ -4,6 +4,7 @@ mod macros;
 mod services;
 
 use ::std::fs::File;
+use ::std::io::Write;
 use ::std::sync::Arc;
 
 use ::clap::Parser;
@@ -49,4 +50,5 @@ fn main() {
     .unwrap();
   let output = cfg.out_format.parse::<File>(&modules).unwrap();
   output.render(&mut out_file, &root, root_tag).unwrap();
+  writeln!(&mut out_file, "").unwrap();
 }
