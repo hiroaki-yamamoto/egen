@@ -14,7 +14,9 @@ pub enum Input {
 }
 
 impl Input {
-  fn parse<Reader>(&self) -> Arc<dyn IDecode<Reader = Reader> + Send + Sync>
+  pub fn parse<Reader>(
+    &self,
+  ) -> Arc<dyn IDecode<Reader = Reader> + Send + Sync>
   where
     Reader: Read + Send + Sync + 'static,
   {
@@ -31,7 +33,7 @@ pub enum Output {
 }
 
 impl Output {
-  fn parse<Writer>(
+  pub fn parse<Writer>(
     &self,
     modules: &[Arc<dyn ITag>],
   ) -> OutputResult<Arc<dyn IOutput<Writer = Writer> + Send + Sync>>
@@ -50,16 +52,16 @@ impl Output {
 pub struct CMD {
   /// Input file name
   #[arg(short, long, value_parser = value_parser!(PathBuf))]
-  input: PathBuf,
+  pub input: PathBuf,
   /// Output directory
   #[arg(short, long, value_parser = value_parser!(PathBuf))]
-  outdir: PathBuf,
+  pub outdir: PathBuf,
 
   /// Input format
-  #[arg(short, long, value_enum, default_value_t = Input::Yaml)]
-  from_format: Input,
+  #[arg(short = 'j', long, value_enum, default_value_t = Input::Yaml)]
+  pub in_format: Input,
 
   /// Output format
-  #[arg(short, long, value_enum)]
-  to_format: Output,
+  #[arg(short = 'p', long, value_enum)]
+  pub out_format: Output,
 }
