@@ -1,16 +1,48 @@
+use ::std::io::{Read, Write};
 use ::std::path::PathBuf;
+use ::std::sync::Arc;
 
 use ::clap::{value_parser, Parser, ValueEnum};
+
+use crate::entities::intermediate::ITag;
+use crate::services::input::{IDecode, Yaml};
+use crate::services::output::{IOutput, OutputResult, Rust, ZodTS};
 
 #[derive(Debug, Clone, ValueEnum)]
 pub enum Input {
   Yaml,
 }
 
+impl Input {
+  fn parse<Reader>(&self) -> Arc<dyn IDecode<Reader = Reader> + Send + Sync>
+  where
+    Reader: Read + Send + Sync + 'static,
+  {
+    return match self {
+      Self::Yaml => Arc::new(Yaml::new()),
+    };
+  }
+}
+
 #[derive(Debug, Clone, ValueEnum)]
 pub enum Output {
   Rust,
   ZodTS,
+}
+
+impl Output {
+  fn parse<Writer>(
+    &self,
+    modules: &[Arc<dyn ITag>],
+  ) -> OutputResult<Arc<dyn IOutput<Writer = Writer> + Send + Sync>>
+  where
+    Writer: Write + Send + Sync + 'static,
+  {
+    return Ok(match self {
+      Self::Rust => Arc::new(Rust::<'static, Writer>::new(modules)?),
+      Self::ZodTS => Arc::new(ZodTS::<'static, Writer>::new(modules)?),
+    });
+  }
 }
 
 #[derive(Parser, Debug)]
