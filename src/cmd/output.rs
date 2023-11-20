@@ -20,7 +20,7 @@ impl Output {
   pub fn parse<Writer>(
     &self,
     modules: &[Arc<dyn ITag>],
-  ) -> OutputResult<Arc<dyn IOutput<Writer = Writer> + Send + Sync>>
+  ) -> OutputResult<Arc<dyn IOutput<Writer = Writer>>>
   where
     Writer: Write + Send + Sync + 'static,
   {
@@ -34,7 +34,7 @@ impl Output {
     &self,
     prefix_dir: &Path,
     tag: Arc<dyn ITag>,
-  ) -> CMDResult<Arc<dyn Write + Send + Sync>> {
+  ) -> CMDResult<File> {
     DirBuilder::new().recursive(true).create(prefix_dir)?;
     let file_name = match self {
       Output::Rust => format!("{}.rs", tag.rs_module_name()),
@@ -42,6 +42,6 @@ impl Output {
     };
     let to_store = prefix_dir.join(file_name);
     let file = File::create(to_store)?;
-    return Ok(Arc::new(file));
+    return Ok(file);
   }
 }

@@ -4,7 +4,6 @@ mod macros;
 mod services;
 
 use ::std::fs::File;
-use ::std::io::Write;
 use ::std::sync::Arc;
 
 use ::clap::Parser;
@@ -44,12 +43,10 @@ fn main() {
     .collect();
   // Output Process
   let root_tag: Arc<dyn ITag> = Arc::new(root_tag);
-  let out_file = cfg
+  let mut out_file = cfg
     .out_format
     .create(&cfg.outdir, root_tag.clone())
     .unwrap();
-  let output = cfg
-    .out_format
-    .parse::<Arc<dyn Write + Send + Sync>>(&modules)
-    .unwrap();
+  let output = cfg.out_format.parse::<File>(&modules).unwrap();
+  output.render(&mut out_file, &root, root_tag).unwrap();
 }
