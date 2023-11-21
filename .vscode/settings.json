@@ -4,6 +4,7 @@
     "entities",
     "service",
     "template",
-    "app"
+    "app",
+    "definition_schema"
   ]
 }
