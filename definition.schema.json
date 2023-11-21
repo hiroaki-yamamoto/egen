@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "fixture",
   "title": "Fixture Schema",
   "description": "Fixture Schema",
@@ -13,6 +13,30 @@
     },
     "rust": {
       "$ref": "#/$defs/rustOptions"
+    },
+    "members": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/primitiveTypes"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/$defs/primitiveTypes"
+              },
+              "rust": {
+                "$ref": "#/$defs/rustOptions"
+              },
+              "optional": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      }
     }
   },
   "required": [
@@ -35,6 +59,24 @@
           }
         }
       }
+    },
+    "primitiveTypes": {
+      "enum": [
+        "bool",
+        "string",
+        "f32",
+        "f64",
+        "i8",
+        "i16",
+        "i32",
+        "i64",
+        "i128",
+        "u8",
+        "u16",
+        "u32",
+        "u64",
+        "u128"
+      ]
     }
   }
 }
