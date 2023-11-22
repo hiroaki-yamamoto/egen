@@ -5,7 +5,8 @@
     "service",
     "template",
     "app",
-    "definition_schema"
+    "definition_schema",
+    "readme"
   ],
   "yaml.schemas": {
     "./definition.schema.json": [
