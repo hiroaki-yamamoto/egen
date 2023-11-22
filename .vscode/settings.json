@@ -6,5 +6,11 @@
     "template",
     "app",
     "definition_schema"
-  ]
+  ],
+  "yaml.schemas": {
+    "./definition.schema.json": [
+      "./src/fixtures/*.yml",
+      "./src/fixtures/*.yaml"
+    ],
+  },
 }

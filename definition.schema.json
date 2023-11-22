@@ -40,7 +40,8 @@
     }
   },
   "required": [
-    "type"
+    "type",
+    "members"
   ],
   "$defs": {
     "rustOptions": {
