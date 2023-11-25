@@ -15,28 +15,35 @@
       "$ref": "#/$defs/rustOptions"
     },
     "members": {
-      "type": "object",
-      "additionalProperties": {
-        "anyOf": [
-          {
-            "$ref": "#/$defs/primitiveTypes"
-          },
-          {
-            "type": "object",
+      "anyOf": [
+        {
+          "if": {
             "properties": {
               "type": {
-                "$ref": "#/$defs/primitiveTypes"
-              },
-              "rust": {
-                "$ref": "#/$defs/rustOptions"
-              },
-              "optional": {
-                "type": "boolean"
+                "const": "struct"
               }
             }
+          },
+          "then": {
+            "$ref": "#/$defs/structMembers"
           }
-        ]
-      }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "enum"
+              }
+            }
+          },
+          "then": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      ]
     }
   },
   "required": [
@@ -78,6 +85,30 @@
         "u64",
         "u128"
       ]
+    },
+    "structMembers": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/primitiveTypes"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/$defs/primitiveTypes"
+              },
+              "rust": {
+                "$ref": "#/$defs/rustOptions"
+              },
+              "optional": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      }
     }
   }
 }
