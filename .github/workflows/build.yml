@@ -22,13 +22,15 @@ jobs:
         run: rustup target add x86_64-unknown-linux-musl
       - name: Setup Rustfmt
         run: rustup component add rustfmt
-      - name: "Test the package"
+      - name: Build the package (Debug)
+        run: cargo build --target x86_64-unknown-linux-musl
+      - name: "Build the package (Release)"
         run: cargo build --target x86_64-unknown-linux-musl -r
       - name: "Upload the package"
         uses: actions/upload-artifact@v3
         with:
           name: egen
-          path: target/x86_64-unknown-linux-musl/release/egen
+          path: target/x86_64-unknown-linux-musl/debug/egen
       - name: "Create a release"
         run: |
           gh release create ${{ github.ref }} -t ${{ github.ref_name }} \
