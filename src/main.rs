@@ -25,7 +25,7 @@ fn main() {
   let cfg = CMD::parse();
   // Input Process
   let input_name = cfg.in_format.check_file_name(&cfg.input).unwrap();
-  let input_dir = input_name.parent().map(|p| p.to_str()).flatten().unwrap();
+  let input_dir = input_name.parent().unwrap();
   let tags = cfg.in_format.glob(input_dir);
   let decoder: Arc<dyn IDecode<Reader = File> + Send + Sync> =
     cfg.in_format.parse();

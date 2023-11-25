@@ -1,6 +1,6 @@
 use ::std::ffi::OsStr;
 use ::std::io::Read;
-use ::std::path::PathBuf;
+use ::std::path::{Path, PathBuf};
 use ::std::sync::Arc;
 
 use ::clap::ValueEnum;
@@ -28,10 +28,11 @@ impl Input {
     };
   }
 
-  fn get_tags(&self, in_glob: &[String]) -> Vec<Tag> {
+  fn get_tags(&self, in_glob: &[PathBuf]) -> Vec<Tag> {
     let in_glob: Vec<_> = in_glob
       .into_iter()
-      .filter_map(|glob_txt| glob(&glob_txt).ok())
+      .filter_map(|glob_path| glob_path.to_str())
+      .filter_map(|glob_txt| glob(glob_txt).ok())
       .collect();
     let mut in_tags: Vec<Tag> = Vec::new();
     for paths in in_glob {
@@ -65,9 +66,9 @@ impl Input {
     return Ok(file_name.clone());
   }
 
-  pub fn glob(&self, dir: &str) -> Vec<Tag> {
-    let in_glob: Vec<String> = match self {
-      Input::Yaml => vec![format!("{}/*.yml", dir), format!("{}/*.yaml", dir)],
+  pub fn glob(&self, dir: &Path) -> Vec<Tag> {
+    let in_glob: Vec<PathBuf> = match self {
+      Input::Yaml => vec![dir.join("*.yml"), dir.join("*.yaml")],
     };
     return self.get_tags(&in_glob);
   }
