@@ -106,6 +106,27 @@
                 "type": "boolean"
               }
             }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "use": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "properties": {
+              "array": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         ]
       }
