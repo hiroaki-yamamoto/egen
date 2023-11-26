@@ -1,0 +1,4 @@
+type: struct
+members:
+  reference1: { use: SimpleStructure }
+  reference2: { use: SimpleStructure }
