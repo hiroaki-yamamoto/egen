@@ -1,4 +1,5 @@
 pub mod complex;
+pub mod dup_reference;
 pub mod enumeration;
 pub mod not_found;
 pub mod reference;
@@ -6,4 +7,3 @@ pub mod self_reference;
 pub mod simple_struct;
 pub mod struct_array;
 pub mod struct_w_fld_attr;
-pub mod two_references;

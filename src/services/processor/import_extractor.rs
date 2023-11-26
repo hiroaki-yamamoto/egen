@@ -77,10 +77,10 @@ mod test {
   use super::ImportExtractorError;
   use crate::entities::intermediate::Tag;
   use crate::fixtures::complex::complex;
+  use crate::fixtures::dup_reference::dup_references;
   use crate::fixtures::not_found::not_found;
   use crate::fixtures::reference::reference;
   use crate::fixtures::self_reference::self_reference;
-  use crate::fixtures::two_references::two_references;
 
   #[test]
   fn test_simple_extraction() {
@@ -100,9 +100,9 @@ mod test {
   #[test]
   fn test_2reference_extraction() {
     let correct = vec![Tag::new("simple_structure".to_string()).unwrap()];
-    let doc = two_references();
+    let doc = dup_references();
 
-    let me = Tag::new("two_reference".to_string()).unwrap();
+    let me = Tag::new("dup_reference".to_string()).unwrap();
     let extractor = ImportExtractor::new(vec![
       Tag::new("simple_structure".to_string()).unwrap(),
       Tag::new("complex_structure".to_string()).unwrap(),
