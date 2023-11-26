@@ -1,3 +1,5 @@
+use ::std::collections::HashSet;
+
 use crate::entities::inputs::{Field, PrimitiveTypes, Root};
 use crate::entities::intermediate::{ITag, Tag};
 
@@ -17,8 +19,8 @@ impl ImportExtractor {
     &self,
     tag_root: &Tag,
     field_type: &PrimitiveTypes,
-  ) -> ImportExtractorResult<Vec<Tag>> {
-    let mut result: Vec<Tag> = Vec::new();
+  ) -> ImportExtractorResult<HashSet<Tag>> {
+    let mut result: HashSet<Tag> = HashSet::new();
     match field_type {
       PrimitiveTypes::Use(name) => {
         let matched = self
@@ -27,15 +29,15 @@ impl ImportExtractor {
           .find(|&tag| tag.class_name().as_ref() == name);
         if let Some(matched) = matched {
           if matched != tag_root {
-            result.push(matched.clone());
+            result.insert(matched.clone());
           }
         } else {
           return Err(ImportExtractorError::ModuleNotFound(name.clone()));
         }
       }
       PrimitiveTypes::Array(arr) => {
-        let mut arr_result = self.extract_by_type(tag_root, &arr.item)?;
-        result.append(&mut arr_result);
+        let arr_result = self.extract_by_type(tag_root, &arr.item)?;
+        result = &result | &arr_result;
       }
       _ => {}
     };
@@ -49,7 +51,7 @@ impl IImportExtractor for ImportExtractor {
     tag_root: &Tag,
     root: &Root,
   ) -> ImportExtractorResult<Vec<Tag>> {
-    let mut result: Vec<Tag> = Vec::new();
+    let mut result: HashSet<Tag> = HashSet::new();
     match root {
       Root::Struct(root) => {
         for (_, field) in root.members.iter() {
@@ -57,12 +59,12 @@ impl IImportExtractor for ImportExtractor {
             Field::Inner(inner) => &inner.f_type,
             Field::Primitive(primitive) => primitive,
           };
-          result.append(&mut self.extract_by_type(tag_root, fld_type)?);
+          result = &result | &self.extract_by_type(tag_root, fld_type)?;
         }
       }
       Root::Enum(_) => {}
     }
-    result.dedup();
+    let result: Vec<Tag> = result.into_iter().collect();
     return Ok(result);
   }
 }
@@ -104,6 +106,7 @@ mod test {
 
     let me = Tag::new("dup_reference".to_string()).unwrap();
     let extractor = ImportExtractor::new(vec![
+      Tag::new("simple_structure".to_string()).unwrap(),
       Tag::new("simple_structure".to_string()).unwrap(),
       Tag::new("complex_structure".to_string()).unwrap(),
       Tag::new("reference".to_string()).unwrap(),
