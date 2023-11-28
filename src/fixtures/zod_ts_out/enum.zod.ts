@@ -6,3 +6,5 @@ export const Enumeration = z.enum([
   'test',
   'this',
 ]);
+
+export type Enumeration = z.infer<typeof Enumeration>;

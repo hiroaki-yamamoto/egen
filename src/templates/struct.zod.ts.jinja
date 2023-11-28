@@ -9,3 +9,5 @@ export const {{ class_name }} = z.object({
   {{ name }}: {{ fld | type }},
   {%- endfor %}
 });
+
+export type {{ class_name }} = z.infer<typeof {{ class_name }}>;

@@ -12,3 +12,5 @@ export const Complex = z.object({
   simpleArray: z.array(z.string()),
   simpleText: z.string(),
 });
+
+export type Complex = z.infer<typeof Complex>;

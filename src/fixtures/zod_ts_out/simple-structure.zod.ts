@@ -30,3 +30,5 @@ export const SimpleStructure = z.object({
   uint64: z.number().max(18446744073709551615).min(0),
   uint8: z.number().max(255).min(0),
 });
+
+export type SimpleStructure = z.infer<typeof SimpleStructure>;
