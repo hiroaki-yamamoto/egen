@@ -4,7 +4,7 @@ use ::std::sync::Arc;
 #[cfg(test)]
 use crate::setter;
 
-use super::interface::IRustAttributes;
+use super::interface::{IRustAttributes, ITSAttributes};
 use super::primitives::PrimitiveTypes;
 use super::rs::Rust;
 use super::ts::TypeScript;
@@ -32,6 +32,18 @@ impl IRustAttributes for FieldInner {
   }
 }
 
+impl ITSAttributes for &FieldInner {
+  fn typescript(&self) -> Arc<Option<TypeScript>> {
+    return self.typescript.clone();
+  }
+}
+
+impl ITSAttributes for FieldInner {
+  fn typescript(&self) -> Arc<Option<TypeScript>> {
+    return self.typescript.clone();
+  }
+}
+
 #[cfg(test)]
 impl FieldInner {
   pub fn new(f_type: PrimitiveTypes) -> Self {
@@ -45,6 +57,7 @@ impl FieldInner {
   // setter!(f_type, PrimitiveTypes);
   // setter!(rust, Arc<Option<Rust>>);
   setter!(optional, bool);
+  setter!(typescript, Arc<Option<TypeScript>>);
 }
 
 #[derive(Debug, Deserialize, Serialize, PartialEq, Eq)]

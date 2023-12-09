@@ -7,7 +7,7 @@ use ::serde::Deserialize;
 use crate::setter;
 
 use super::field::{Field, FieldInner};
-use super::interface::{IMembers, IRustAttributes};
+use super::interface::{IMembers, IRustAttributes, ITSAttributes};
 use super::rs::Rust;
 use super::ts::TypeScript;
 
@@ -19,20 +19,25 @@ pub struct Structure {
   pub typescript: Arc<Option<TypeScript>>,
 }
 
+#[cfg(test)]
 impl Structure {
-  #[cfg(test)]
   pub fn new() -> Self {
     return Self::default();
   }
-  #[cfg(test)]
   setter!(members, HashMap<String, Field>);
-  #[cfg(test)]
   setter!(rust, Arc<Option<Rust>>);
+  setter!(typescript, Arc<Option<TypeScript>>);
 }
 
 impl IRustAttributes for &Structure {
   fn rust(&self) -> Arc<Option<Rust>> {
     return self.rust.clone();
+  }
+}
+
+impl ITSAttributes for &Structure {
+  fn typescript(&self) -> Arc<Option<TypeScript>> {
+    return self.typescript.clone();
   }
 }
 

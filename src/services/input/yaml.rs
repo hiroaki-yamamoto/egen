@@ -44,6 +44,7 @@ mod tests {
     complex::complex, enumeration::enumeration, reference::reference,
     self_reference::self_reference, simple_struct::struct_simple,
     struct_array::struct_array, struct_w_fld_attr::struct_w_fld_attr,
+    typescript_rename::typescript_rename,
   };
 
   #[test]
@@ -128,6 +129,19 @@ mod tests {
   fn test_enumeration() {
     let structure = enumeration();
     let doc = include_str!("../../fixtures/enumeration.yml");
+    let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
+    assert!(
+      doc == structure,
+      "fixture = {:?}, structure = {:?}",
+      doc,
+      structure
+    );
+  }
+
+  #[test]
+  fn test_ts_rename() {
+    let structure = typescript_rename();
+    let doc = include_str!("../../fixtures/typescript_rename.yml");
     let doc = Yaml::new().decode(doc.as_bytes()).unwrap();
     assert!(
       doc == structure,

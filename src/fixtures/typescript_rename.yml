@@ -1,0 +1,8 @@
+type: struct
+typescript:
+  rename: camelCase
+members:
+  test_field1: string
+  test_field2:
+    typescript: { rename: snakeCase }
+    type: string
