@@ -14,6 +14,9 @@
     "rust": {
       "$ref": "#/$defs/rustOptions"
     },
+    "typescript": {
+      "$ref": "#/$defs/tsOptions"
+    },
     "members": {
       "anyOf": [
         {
@@ -68,6 +71,17 @@
         }
       }
     },
+    "tsOptions": {
+      "type": "object",
+      "properties": {
+        "rename": {
+          "enum": [
+            "camelCase",
+            "snakeCase"
+          ]
+        }
+      }
+    },
     "primitiveTypes": {
       "enum": [
         "bool",
@@ -101,6 +115,9 @@
               },
               "rust": {
                 "$ref": "#/$defs/rustOptions"
+              },
+              "typescript": {
+                "$ref": "#/$defs/tsOptions"
               },
               "optional": {
                 "type": "boolean"
