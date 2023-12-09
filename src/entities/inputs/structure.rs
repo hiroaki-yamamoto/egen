@@ -9,12 +9,14 @@ use crate::setter;
 use super::field::{Field, FieldInner};
 use super::interface::{IMembers, IRustAttributes};
 use super::rs::Rust;
+use super::ts::TypeScript;
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Structure {
   pub members: HashMap<String, Field>,
   pub rust: Arc<Option<Rust>>,
+  pub typescript: Arc<Option<TypeScript>>,
 }
 
 impl Structure {

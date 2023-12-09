@@ -14,6 +14,7 @@ pub fn struct_w_fld_attr() -> Root {
           derive: vec!["Debug".to_string()].into(),
           attrs: vec!["serde(rename = \"test2\")".to_string()].into(),
         })),
+        typescript: Arc::new(None),
         optional: false,
       })
     })

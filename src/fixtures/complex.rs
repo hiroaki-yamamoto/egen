@@ -26,6 +26,7 @@ pub fn complex() -> Root {
             Some(vec!["serde(rename = \"detail\")".to_string()])
           )
         )),
+        typescript: Arc::new(None),
         optional: false,
       }),
       "simpleArray".to_string() => Field::Inner(FieldInner {
@@ -33,6 +34,7 @@ pub fn complex() -> Root {
         rust: Arc::new(Some(
           Rust::new().attrs(Some(vec!["serde(rename = \"lst\")".to_string()]))
         )),
+        typescript: Arc::new(None),
         optional: false,
       }),
       "referenceArray".to_string() => Field::Primitive(PrimitiveTypes::Array(

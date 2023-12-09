@@ -7,6 +7,7 @@ use crate::setter;
 use super::interface::IRustAttributes;
 use super::primitives::PrimitiveTypes;
 use super::rs::Rust;
+use super::ts::TypeScript;
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
@@ -14,6 +15,7 @@ pub struct FieldInner {
   #[serde(rename = "type")]
   pub f_type: PrimitiveTypes,
   pub rust: Arc<Option<Rust>>,
+  pub typescript: Arc<Option<TypeScript>>,
   #[serde(default = "bool::default")]
   pub optional: bool,
 }
@@ -36,6 +38,7 @@ impl FieldInner {
     return Self {
       f_type,
       rust: Arc::new(None),
+      typescript: Arc::new(None),
       optional: false,
     };
   }
@@ -66,6 +69,7 @@ impl From<&Field> for FieldInner {
         f_type: primitive.clone(),
         optional: false,
         rust: Arc::new(None),
+        typescript: Arc::new(None),
       },
     }
   }
