@@ -2,22 +2,22 @@ use ::std::cmp::Ordering;
 use ::std::hash::Hash;
 use ::std::sync::Arc;
 
-use ::regex::Regex;
-
 use super::error::Result as IntermediateResult;
 use super::itag::ITag;
+
+use crate::manipulators::CaseManipulator;
 
 #[derive(Debug, Clone)]
 pub struct Tag {
   raw_name: String,
-  re: Regex,
+  case_manip: CaseManipulator,
 }
 
 impl Tag {
   pub fn new(name: String) -> IntermediateResult<Self> {
     return Ok(Self {
-      raw_name: name,
-      re: Regex::new(r"[[:^alnum:]]")?,
+      raw_name: name.clone(),
+      case_manip: CaseManipulator::new(name)?,
     });
   }
 }
@@ -48,29 +48,18 @@ impl Hash for Tag {
 
 impl ITag for Tag {
   fn class_name(&self) -> Arc<String> {
-    let mut name = self.raw_name.to_string().replace("-", "_");
-    let split_capitalized_names = name.split("_").map(|name| {
-      let mut name = self.re.replace_all(name, "").to_string();
-      name = name.remove(0).to_uppercase().to_string() + &name.to_lowercase();
-      return name;
-    });
-    name = split_capitalized_names.collect::<Vec<String>>().join("");
-    return Arc::new(name);
+    let manip = self.case_manip.clone();
+    return manip.remove_non_alnum().pascal_case().build();
   }
 
   fn rs_module_name(&self) -> Arc<String> {
-    let mut name = self.raw_name.to_string().replace("-", "_");
-    let split_capitalized_names = name.split("_").map(|name| {
-      let name = self.re.replace_all(&name, "").to_lowercase();
-      return name;
-    });
-    name = split_capitalized_names.collect::<Vec<String>>().join("_");
-    return Arc::new(name);
+    let manip = self.case_manip.clone();
+    return manip.remove_non_alnum().snake_case().build();
   }
 
   fn ts_module_name(&self) -> Arc<String> {
-    let name = self.rs_module_name().replace("_", "-");
-    return Arc::new(name);
+    let manip = self.case_manip.clone();
+    return manip.remove_non_alnum().kebab_case().build();
   }
 }
 

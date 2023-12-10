@@ -1,1 +1,3 @@
-pub mod case_modifier;
+mod case_manipulator;
+
+pub use self::case_manipulator::CaseManipulator;
