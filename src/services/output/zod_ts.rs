@@ -8,8 +8,9 @@ use ::map_macro::hash_map_e;
 use ::minijinja::value::{Value, ViaDeserialize};
 use ::minijinja::{Environment, Template};
 
-use crate::entities::inputs::FieldInner;
+use crate::entities::inputs::{FieldInner, Rename, TypeScript};
 use crate::entities::intermediate::ITag;
+use crate::manipulators::CaseManipulator;
 
 use super::interface::{IOutput, ITemplate};
 use super::OutputResult;
@@ -21,6 +22,25 @@ fn convert_type(fld_inner: ViaDeserialize<FieldInner>) -> String {
     return format!("{}.optional()", inner);
   }
   return inner;
+}
+
+fn rename(
+  name: &str,
+  ts: ViaDeserialize<TypeScript>,
+  fld_inner: ViaDeserialize<FieldInner>,
+) -> String {
+  let mut rule = ts.rename.clone();
+  if let Some(ts) = fld_inner.typescript.as_ref() {
+    rule = ts.rename.clone();
+  }
+  if let Ok(manip) = CaseManipulator::new(name) {
+    let mut name = manip.with_rename(&rule).build().to_string();
+    if rule == Rename::KebabCase {
+      name = format!("\'{}\'", name);
+    }
+    return name;
+  }
+  return name.to_string();
 }
 
 pub struct ZodTS<'env, Writer>
@@ -57,6 +77,7 @@ where
       include_str!("../../templates/struct.zod.ts.jinja"),
     )?;
     env.add_filter("type", convert_type);
+    env.add_filter("rename", rename);
     env.add_template(
       "enum",
       include_str!("../../templates/enum.zod.ts.jinja"),

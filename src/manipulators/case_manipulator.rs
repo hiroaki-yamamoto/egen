@@ -1,5 +1,6 @@
 use ::std::sync::Arc;
 
+use crate::entities::inputs::Rename;
 use ::regex::{Error as RegexError, Regex};
 
 #[derive(Debug, Clone)]
@@ -17,14 +18,6 @@ impl CaseManipulator {
       non_alnum_regex: Regex::new(r"[^0-9a-zA-Z\-\_]")?,
       text: Arc::new(text.to_string()),
     });
-  }
-
-  pub fn text<T>(mut self, text: T) -> Self
-  where
-    T: ToString,
-  {
-    self.text = Arc::new(text.to_string());
-    return self;
   }
 
   pub fn remove_non_alnum(mut self) -> Self {
@@ -77,6 +70,15 @@ impl CaseManipulator {
     return Self {
       text: Arc::new(text),
       non_alnum_regex: regex,
+    };
+  }
+
+  pub fn with_rename(self, rename: &Rename) -> Self {
+    return match rename {
+      Rename::CamelCase => self.camel_case(),
+      Rename::PascalCase => self.pascal_case(),
+      Rename::SnakeCase => self.snake_case(),
+      Rename::KebabCase => self.kebab_case(),
     };
   }
 

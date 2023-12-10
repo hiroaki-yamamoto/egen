@@ -3,7 +3,9 @@ use ::std::sync::Arc;
 
 use ::minijinja::{context, Template};
 
-use crate::entities::inputs::{IMembers, IRustAttributes, Root};
+use crate::entities::inputs::{
+  IMembers, IRustAttributes, ITSAttributes, Root,
+};
 use crate::entities::intermediate::ITag;
 
 use super::error::OutputResult;
@@ -21,18 +23,27 @@ pub trait IOutput: ITemplate {
     root: &Root,
     root_tag: Arc<dyn ITag>,
   ) -> OutputResult<()> {
-    let (template, rust_attrs, members): (
+    let (template, rust_attrs, ts_attrs, members): (
       Template,
       Arc<dyn IRustAttributes>,
+      Arc<dyn ITSAttributes>,
       Arc<dyn IMembers>,
     ) = match root {
-      Root::Struct(s) => (self.struct_template()?, Arc::new(s), Arc::new(s)),
-      Root::Enum(e) => (self.enum_template()?, Arc::new(e), Arc::new(e)),
+      Root::Struct(s) => (
+        self.struct_template()?,
+        Arc::new(s),
+        Arc::new(s),
+        Arc::new(s),
+      ),
+      Root::Enum(e) => {
+        (self.enum_template()?, Arc::new(e), Arc::new(e), Arc::new(e))
+      }
     };
     template.render_to_write(
       context! {
         class_name => root_tag.class_name().to_string(),
         rust => rust_attrs.rust().as_ref(),
+        typescript => ts_attrs.typescript().as_ref(),
         members => members.members(),
       },
       writer,

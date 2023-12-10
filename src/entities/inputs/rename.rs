@@ -1,7 +1,6 @@
 use ::serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Serialize)]
-#[cfg_attr(test, derive(Clone))]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Rename {
   /// PascalCase

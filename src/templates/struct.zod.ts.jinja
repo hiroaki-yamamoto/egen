@@ -6,7 +6,11 @@ import { {{ tag.class }} } from './{{ tag.module }}.zod.ts';
 
 export const {{ class_name }} = z.object({
   {%- for (name, fld) in members | sort %}
+  {%- if typescript %}
+  {{ name | rename(typescript, fld) }}: {{ fld | type }},
+  {%- else %}
   {{ name }}: {{ fld | type }},
+  {%- endif %}
   {%- endfor %}
 });
 

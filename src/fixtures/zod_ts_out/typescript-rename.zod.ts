@@ -7,3 +7,5 @@ export const TypescriptRename = z.object({
   'test-field4': z.string(),
   testField5: z.string(),
 });
+
+export type TypescriptRename = z.infer<typeof TypescriptRename>;

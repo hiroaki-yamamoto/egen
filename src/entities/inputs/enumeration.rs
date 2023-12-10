@@ -3,8 +3,9 @@ use ::std::sync::Arc;
 use ::serde::Deserialize;
 
 use super::field::FieldInner;
-use super::interface::{IMembers, IRustAttributes};
+use super::interface::{IMembers, IRustAttributes, ITSAttributes};
 use super::rs::Rust;
+use super::ts::TypeScript;
 
 #[cfg(test)]
 use crate::setter;
@@ -28,6 +29,12 @@ impl Enumeration {
 impl IRustAttributes for &Enumeration {
   fn rust(&self) -> Arc<Option<Rust>> {
     return self.rust.clone();
+  }
+}
+
+impl ITSAttributes for &Enumeration {
+  fn typescript(&self) -> Arc<Option<TypeScript>> {
+    return Arc::new(None);
   }
 }
 
