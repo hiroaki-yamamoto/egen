@@ -6,8 +6,7 @@
     "template",
     "app",
     "definition_schema",
-    "readme",
-    "manipulator"
+    "readme"
   ],
   "yaml.schemas": {
     "./definition.schema.json": [

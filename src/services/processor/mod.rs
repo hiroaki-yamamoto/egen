@@ -1,8 +1,10 @@
+mod case_manipulator;
 mod error;
 mod import_extractor;
 mod input;
 mod interface;
 
+pub use self::case_manipulator::CaseManipulator;
 pub use self::error::{
   ImportExtractorError, ImportExtractorResult, InputProcessError,
   InputProcessResult,

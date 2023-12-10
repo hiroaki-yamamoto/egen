@@ -10,7 +10,7 @@ use ::minijinja::{Environment, Template};
 
 use crate::entities::inputs::{FieldInner, Rename, TypeScript};
 use crate::entities::intermediate::ITag;
-use crate::manipulators::CaseManipulator;
+use crate::services::processor::CaseManipulator;
 
 use super::interface::{IOutput, ITemplate};
 use super::OutputResult;

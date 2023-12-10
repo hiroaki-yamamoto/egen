@@ -5,7 +5,7 @@ use ::std::sync::Arc;
 use super::error::Result as IntermediateResult;
 use super::itag::ITag;
 
-use crate::manipulators::CaseManipulator;
+use crate::services::processor::CaseManipulator;
 
 #[derive(Debug, Clone)]
 pub struct Tag {
