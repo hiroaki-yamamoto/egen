@@ -1,6 +1,7 @@
 mod cmd;
 mod entities;
 mod macros;
+mod manipulators;
 mod services;
 
 use ::std::fs::File;

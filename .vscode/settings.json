@@ -6,7 +6,8 @@
     "template",
     "app",
     "definition_schema",
-    "readme"
+    "readme",
+    "manipulator"
   ],
   "yaml.schemas": {
     "./definition.schema.json": [
@@ -14,4 +15,5 @@
       "./src/fixtures/*.yaml"
     ],
   },
+  "rust-analyzer.showUnlinkedFileNotification": false,
 }
