@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { Reference } from './reference.zod.ts';
-import { SimpleStructure } from './simple-structure.zod.ts';
+import { Reference } from './reference.zod';
+import { SimpleStructure } from './simple-structure.zod';
 
 export const Complex = z.object({
   code: z.number().max(65535).min(0),

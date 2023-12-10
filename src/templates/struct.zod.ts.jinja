@@ -1,7 +1,7 @@
 import { z } from 'zod';
 {%- if tags | length > 0 %}{{ '\n' }}{% endif -%}
 {%- for tag in tags | sort %}
-import { {{ tag.class }} } from './{{ tag.module }}.zod.ts';
+import { {{ tag.class }} } from './{{ tag.module }}.zod';
 {%- endfor %}
 
 export const {{ class_name }} = z.object({
