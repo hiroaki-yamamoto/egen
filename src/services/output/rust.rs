@@ -100,6 +100,7 @@ pub mod test {
   use crate::fixtures::simple_struct::struct_simple;
   use crate::fixtures::struct_array::struct_array;
   use crate::fixtures::struct_w_fld_attr::struct_w_fld_attr;
+  use crate::fixtures::typescript_rename::typescript_rename;
   use crate::test_utils::assert_txt_eq;
 
   use super::IOutput;
@@ -201,6 +202,16 @@ pub mod test {
     let root = enumeration();
     let tag = Tag::new("enumeration".to_string()).unwrap();
     let correct = include_str!("../../fixtures/rs_out/enumeration.rs")
+      .trim()
+      .to_string();
+    process(root, tag, &[], correct);
+  }
+
+  #[test]
+  fn test_ts_rename() {
+    let root = typescript_rename();
+    let tag = Tag::new("typescript_rename".to_string()).unwrap();
+    let correct = include_str!("../../fixtures/rs_out/typescript_rename.rs")
       .trim()
       .to_string();
     process(root, tag, &[], correct);
