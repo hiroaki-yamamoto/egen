@@ -102,6 +102,7 @@ pub mod test {
   use crate::fixtures::self_reference::self_reference;
   use crate::fixtures::simple_struct::struct_simple;
   use crate::fixtures::struct_array::struct_array;
+  use crate::fixtures::typescript_rename::typescript_rename;
   use crate::test_utils::assert_txt_eq;
 
   use super::IOutput;
@@ -197,6 +198,17 @@ pub mod test {
     let correct = include_str!("../../fixtures/zod_ts_out/enum.zod.ts")
       .trim()
       .to_string();
+    process(root, tag, &[], correct);
+  }
+
+  #[test]
+  fn test_ts_rename() {
+    let root = typescript_rename();
+    let tag = Tag::new("typescript_rename".to_string()).unwrap();
+    let correct =
+      include_str!("../../fixtures/zod_ts_out/typescript-rename.zod.ts")
+        .trim()
+        .to_string();
     process(root, tag, &[], correct);
   }
 }

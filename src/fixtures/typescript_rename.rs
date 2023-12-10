@@ -14,6 +14,21 @@ pub fn typescript_rename() -> Root {
           Some(TypeScript::new().rename(Rename::SnakeCase)).into()
         )
       ),
+      "test_field3".to_string() => Field::Inner(
+        FieldInner::new(PrimitiveTypes::String).typescript(
+          Some(TypeScript::new().rename(Rename::PascalCase)).into()
+        )
+      ),
+      "test_field4".to_string() => Field::Inner(
+        FieldInner::new(PrimitiveTypes::String).typescript(
+          Some(TypeScript::new().rename(Rename::KebabCase)).into()
+        )
+      ),
+      "test_field5".to_string() => Field::Inner(
+        FieldInner::new(PrimitiveTypes::String).typescript(
+          Some(TypeScript::new().rename(Rename::CamelCase)).into()
+        )
+      ),
     })
     .into();
 }

@@ -6,3 +6,12 @@ members:
   test_field2:
     typescript: { rename: snakeCase }
     type: string
+  test_field3:
+    typescript: { rename: pascalCase }
+    type: string
+  test_field4:
+    typescript: { rename: kebabCase }
+    type: string
+  test_field5:
+    typescript: { rename: camelCase }
+    type: string
