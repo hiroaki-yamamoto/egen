@@ -81,7 +81,7 @@ mod test {
   fn test_rs_tag() {
     let tag = Tag::new("@ cla\tss_na||☺Me-te\nst|\\]';".to_string()).unwrap();
     let result = tag.rs_module_name();
-    let correct = Arc::new("class_name_test".to_string());
+    let correct = Arc::new("class_na_me_test".to_string());
     assert_eq!(result, correct);
   }
 
@@ -89,6 +89,6 @@ mod test {
   fn test_ts_module_name() {
     let tag = Tag::new("@ cla\tss_na||☺Me-te\nst|\\]';".to_string()).unwrap();
     let name = tag.ts_module_name();
-    assert!(name.as_ref() == "class-name-test", "name: {:?}", name);
+    assert!(name.as_ref() == "class-na-me-test", "name: {:?}", name);
   }
 }

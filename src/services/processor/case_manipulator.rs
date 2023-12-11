@@ -1,11 +1,12 @@
 use ::std::sync::Arc;
 
 use crate::entities::inputs::Rename;
-use ::regex::{Error as RegexError, Regex};
+use ::regex::{Captures, Error as RegexError, Regex};
 
 #[derive(Debug, Clone)]
 pub struct CaseManipulator {
   non_alnum_regex: Regex,
+  camel_regex: Regex,
   text: Arc<String>,
 }
 
@@ -16,6 +17,7 @@ impl CaseManipulator {
   {
     return Ok(Self {
       non_alnum_regex: Regex::new(r"[^0-9a-zA-Z\-\_]")?,
+      camel_regex: Regex::new(r"[0-9a-z][[:upper:]]")?,
       text: Arc::new(text.to_string()),
     });
   }
@@ -31,12 +33,14 @@ impl CaseManipulator {
   }
 
   pub fn camel_case(self) -> Self {
-    let regex = self.non_alnum_regex.clone();
+    let non_alnum_regex = self.non_alnum_regex.clone();
+    let camel_regex = self.camel_regex.clone();
     let mut text = self.pascal_case().text.to_string();
     text = text.remove(0).to_lowercase().to_string() + &text;
     return Self {
       text: Arc::new(text),
-      non_alnum_regex: regex,
+      non_alnum_regex,
+      camel_regex,
     };
   }
 
@@ -54,7 +58,18 @@ impl CaseManipulator {
   }
 
   pub fn snake_case(mut self) -> Self {
-    let text = self.text.replace("-", "_");
+    let mut text =
+      self
+        .camel_regex
+        .replace_all(self.text.as_ref(), |caps: &Captures| {
+          let matched = caps.get(0).map(|s| s.as_str()).unwrap_or("");
+          let (first, second) =
+            (matched.chars().nth(0), matched.chars().nth(1));
+          let first = first.unwrap_or(' ').to_string();
+          let second = second.unwrap_or(' ').to_string();
+          return first + "_" + second.to_lowercase().as_str();
+        });
+    text = text.replace("-", "_").into();
     let split_capitalized_text = text.split("_").map(|text| {
       let text = text.to_lowercase();
       return text;
@@ -65,11 +80,13 @@ impl CaseManipulator {
   }
 
   pub fn kebab_case(self) -> Self {
-    let regex = self.non_alnum_regex.clone();
+    let non_alnum_regex = self.non_alnum_regex.clone();
+    let camel_regex = self.camel_regex.clone();
     let text = self.snake_case().build().replace("_", "-");
     return Self {
       text: Arc::new(text),
-      non_alnum_regex: regex,
+      non_alnum_regex,
+      camel_regex,
     };
   }
 
@@ -140,8 +157,35 @@ mod test {
   }
 
   #[test]
+  fn test_snake_case_from_pascal_case() {
+    let text = CaseManipulator::new("ClassNameTest")
+      .unwrap()
+      .snake_case()
+      .build();
+    assert!(text.as_str() == "class_name_test", "text: {:?}", text);
+  }
+
+  #[test]
   fn test_snake_case_from_camel_case() {
     let text = CaseManipulator::new("classNameTest")
+      .unwrap()
+      .snake_case()
+      .build();
+    assert!(text.as_str() == "class_name_test", "text: {:?}", text);
+  }
+
+  #[test]
+  fn test_snake_case_from_upper_case() {
+    let text = CaseManipulator::new("CLASS_NAME_TEST")
+      .unwrap()
+      .snake_case()
+      .build();
+    assert!(text.as_str() == "class_name_test", "text: {:?}", text);
+  }
+
+  #[test]
+  fn test_snake_case_from_kebab_case() {
+    let text = CaseManipulator::new("class-name-test")
       .unwrap()
       .snake_case()
       .build();
