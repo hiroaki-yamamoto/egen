@@ -140,6 +140,15 @@ mod test {
   }
 
   #[test]
+  fn test_snake_case_from_camel_case() {
+    let text = CaseManipulator::new("classNameTest")
+      .unwrap()
+      .snake_case()
+      .build();
+    assert!(text.as_str() == "class_name_test", "text: {:?}", text);
+  }
+
+  #[test]
   fn test_kebab_case() {
     let text = CaseManipulator::new("cla\tss_na||☺Me-te\nst|\\]';")
       .unwrap()
