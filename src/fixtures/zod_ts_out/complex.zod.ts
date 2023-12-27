@@ -4,7 +4,7 @@ import { Reference } from './reference.zod';
 import { SimpleStructure } from './simple-structure.zod';
 
 export const Complex = z.object({
-  code: z.number().max(65535).min(0),
+  code: z.number().int().max(65535).min(0),
   detailedText: z.string(),
   referenceArray: z.array(z.lazy(() => SimpleStructure)),
   secondReference: z.lazy(() => Reference),

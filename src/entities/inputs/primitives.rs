@@ -94,9 +94,10 @@ impl PrimitiveTypes {
     let conv_type = match self {
       PrimitiveTypes::Bool => "z.boolean()".to_string(),
       PrimitiveTypes::String => "z.string()".to_string(),
-      PrimitiveTypes::F32
-      | PrimitiveTypes::F64
-      | PrimitiveTypes::I8
+      PrimitiveTypes::F32 | PrimitiveTypes::F64 => {
+        format!("z.number().max({}).min({})", max, min)
+      }
+      PrimitiveTypes::I8
       | PrimitiveTypes::I16
       | PrimitiveTypes::I32
       | PrimitiveTypes::I64
@@ -106,7 +107,7 @@ impl PrimitiveTypes {
       | PrimitiveTypes::U32
       | PrimitiveTypes::U64
       | PrimitiveTypes::U128 => {
-        format!("z.number().max({}).min({})", max, min)
+        format!("z.number().int().max({}).min({})", max, min)
       }
       PrimitiveTypes::Use(s) => format!("z.lazy(() => {})", s.to_string()),
       PrimitiveTypes::Array(arr) => {
