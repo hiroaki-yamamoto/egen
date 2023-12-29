@@ -25,7 +25,7 @@ jobs:
       - name: Adjust the version
         run: cargo set-version ${VERSION/v/}
         env:
-          VERSION: ${{ github.ref }}
+          VERSION: ${{ github.ref_name }}
       - name: Build the package (Debug)
         run: cargo build --target x86_64-unknown-linux-musl
       - name: "Build the package (Release)"
