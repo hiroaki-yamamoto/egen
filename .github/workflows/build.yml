@@ -20,8 +20,12 @@ jobs:
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
       - name: Target to x86_64-unknown-linux-musl
         run: rustup target add x86_64-unknown-linux-musl
-      - name: Setup Rustfmt
-        run: rustup component add rustfmt
+      - name: Install cargo-edit
+        run: cargo install cargo-edit
+      - name: Adjust the version
+        run: cargo set-version ${VERSION/v/}
+        env:
+          VERSION: ${{ github.ref }}
       - name: Build the package (Debug)
         run: cargo build --target x86_64-unknown-linux-musl
       - name: "Build the package (Release)"
