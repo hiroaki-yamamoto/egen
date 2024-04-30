@@ -51,7 +51,7 @@ where
       })
       .collect();
     let mut env: Environment<'env> = Environment::new();
-    env.add_global("tags", Value::from_seq_object(modules));
+    env.add_global("tags", Value::from(modules));
     env.add_template(
       "struct",
       include_str!("../../templates/struct.rs.jinja"),

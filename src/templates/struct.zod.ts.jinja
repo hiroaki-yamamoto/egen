@@ -1,6 +1,6 @@
 import { z } from 'zod';
 {%- if tags | length > 0 %}{{ '\n' }}{% endif -%}
-{%- for tag in tags | sort %}
+{%- for tag in tags | sort(attribute="module") %}
 import { {{ tag.class }} } from './{{ tag.module }}.zod';
 {%- endfor %}
 
