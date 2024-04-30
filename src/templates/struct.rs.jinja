@@ -1,4 +1,4 @@
-{% for tag in tags | sort -%}
+{% for tag in tags | sort(attribute="module") -%}
 use super::{{ tag.module }}::{{ tag.class }};
 {% endfor -%}
 
