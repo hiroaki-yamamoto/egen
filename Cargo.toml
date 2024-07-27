@@ -10,7 +10,7 @@ clap = { version = "4.5.4", features = ["derive"] }
 err-derive = "0.3.1"
 glob = "0.3.1"
 map-macro = "0.3.0"
-minijinja = "2.0.1"
+minijinja = "2.1.0"
 regex = "1.10.4"
 serde = { version = "1.0.199", features = ["derive", "rc"] }
 serde_yaml = "0.9.34"
