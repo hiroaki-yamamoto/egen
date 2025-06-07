@@ -10,13 +10,13 @@ importers:
     dependencies:
       zod:
         specifier: ^3.22.4
-        version: 3.25.43
+        version: 3.25.56
 
 packages:
 
-  zod@3.25.43:
-    resolution: {integrity: sha512-KrQFEkfox9WLfYCOksqEWjf97QdgSC1YJSqxJxnWz0l+BW8mN2PQ+yjshL8RC7RC5p5YOlUCLyTDNaf++QbPtA==}
+  zod@3.25.56:
+    resolution: {integrity: sha512-rd6eEF3BTNvQnR2e2wwolfTmUTnp70aUTqr0oaGbHifzC3BKJsoV+Gat8vxUMR1hwOKBs6El+qWehrHbCpW6SQ==}
 
 snapshots:
 
-  zod@3.25.43: {}
+  zod@3.25.56: {}
