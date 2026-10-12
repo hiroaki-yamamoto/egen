@@ -1,6 +1,7 @@
 use ::std::io::Write;
 use ::std::sync::Arc;
 
+use ::minijinja::value::Serde;
 use ::minijinja::{context, Template};
 
 use crate::entities::inputs::{
@@ -11,8 +12,8 @@ use crate::entities::intermediate::ITag;
 use super::error::OutputResult;
 
 pub trait ITemplate {
-  fn struct_template(&self) -> OutputResult<Template>;
-  fn enum_template(&self) -> OutputResult<Template>;
+  fn struct_template(&self) -> OutputResult<Template<'_, '_>>;
+  fn enum_template(&self) -> OutputResult<Template<'_, '_>>;
 }
 
 pub trait IOutput: ITemplate {
@@ -39,12 +40,12 @@ pub trait IOutput: ITemplate {
         (self.enum_template()?, Arc::new(e), Arc::new(e), Arc::new(e))
       }
     };
-    template.render_to_write(
+    template.render_captured_to(
       context! {
         class_name => root_tag.class_name().to_string(),
-        rust => rust_attrs.rust().as_ref(),
-        typescript => ts_attrs.typescript().as_ref(),
-        members => members.members(),
+        rust => Serde(rust_attrs.rust()),
+        typescript => Serde(ts_attrs.typescript()),
+        members => Serde(members.members()),
       },
       writer,
     )?;

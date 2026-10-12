@@ -1,3 +1,5 @@
+#![allow(non_local_definitions)]
+
 mod cmd;
 mod entities;
 mod macros;
