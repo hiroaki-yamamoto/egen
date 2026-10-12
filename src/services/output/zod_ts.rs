@@ -5,7 +5,7 @@ use ::std::sync::Arc;
 
 use ::map_macro::hash_map_e;
 
-use ::minijinja::value::{Value, ViaDeserialize};
+use ::minijinja::value::{Serde, Value};
 use ::minijinja::{Environment, Template};
 
 use crate::entities::inputs::{FieldInner, Rename, TypeScript};
@@ -16,7 +16,7 @@ use super::interface::{IOutput, ITemplate};
 use super::OutputResult;
 
 #[allow(dead_code)]
-fn convert_type(fld_inner: ViaDeserialize<FieldInner>) -> String {
+fn convert_type(fld_inner: Serde<FieldInner>) -> String {
   let inner = fld_inner.f_type.to_zod_ts();
   if fld_inner.optional {
     return format!("{}.optional()", inner);
@@ -26,8 +26,8 @@ fn convert_type(fld_inner: ViaDeserialize<FieldInner>) -> String {
 
 fn rename(
   name: &str,
-  ts: ViaDeserialize<TypeScript>,
-  fld_inner: ViaDeserialize<FieldInner>,
+  ts: Serde<TypeScript>,
+  fld_inner: Serde<FieldInner>,
 ) -> String {
   let mut rule = ts.rename.clone();
   if let Some(ts) = fld_inner.typescript.as_ref() {
@@ -93,11 +93,11 @@ impl<'env, Writer> ITemplate for ZodTS<'env, Writer>
 where
   Writer: Write,
 {
-  fn struct_template(&self) -> OutputResult<Template> {
+  fn struct_template(&self) -> OutputResult<Template<'_, '_>> {
     return Ok(self.env.get_template("struct")?);
   }
 
-  fn enum_template(&self) -> OutputResult<Template> {
+  fn enum_template(&self) -> OutputResult<Template<'_, '_>> {
     return Ok(self.env.get_template("enum")?);
   }
 }
